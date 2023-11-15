@@ -1,6 +1,7 @@
 #ifndef _SIMULATION_H_
 #define _SIMULATION_H_
-
+#include <iostream>
+#include <fstream>
 /**
  * @brief Class that contains the simulator of the snaze game
 */
@@ -11,7 +12,15 @@ private:
     unsigned short fps{4};      //!< Numbers of frames per second | Default = 4
     unsigned short lives{5};    //!< Lives the snake has | Default = 5
     unsigned short food{10};    //!< Quantity of food pellets for the entire simulation | Default = 10
+
+    std::ifstream inputfile;
 public:
+
+    /**
+     * @brief Default constructor
+    */
+    ~SnazeSimulation() = default;
+    
     /**
      * @brief Read arguments from CLI, update simulation values and read level that will be played
     */
@@ -21,14 +30,16 @@ public:
      * @brief Function that returns if the game is over or not
     */
     bool is_over();
-    void process_events();
-    void render();
-    void update();
 
     /**
-     * @brief Return lives
+     * @brief Return starting lives
     */
     unsigned short ret_lives();
+
+    /**
+     * @brief Return starting food amount
+    */
+    unsigned short ret_food();
 
     /**
      * @brief Help message
@@ -40,6 +51,14 @@ public:
      * values given by arguments via CLI
     */
     void introduction_message();
+
+    void open_file(const std::string& filename);
+
+    void read_file();
+
+    void process_events();
+    void render();
+    void update();
 };
 
 #endif
