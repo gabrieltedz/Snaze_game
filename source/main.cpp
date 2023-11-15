@@ -1,17 +1,18 @@
+#include "simulation.h"
+
 /**!
  *  This program implements the Snake simulation.
  *  @author Selan R. dos Santos
  */
-
-#include "simulation.h"
-
-
 int main(int argc, char* argv[]) {
+  // Create object snaze from class SnazeSimulation
   SnazeSimulation snaze;
-  // SnazeSimulation is a singleton.
-  //std::cout << argc << "e" << argv[1] << std::endl;
+
+  // Read arguments from CLI, update in-game values and read level that will be played
   snaze.initialize(argc, argv);
-  //help_message();
+
+  // Output intro message with atualized game values
+  snaze.introduction_message();
   // The Game Loop.
   /*while (not snaze.is_over()) {
     snaze.process_events();
