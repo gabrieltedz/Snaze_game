@@ -3,5 +3,6 @@
 #include <iostream>
 
 void introduction_message();
+void help_message();
 
 #endif

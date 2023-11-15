@@ -5,11 +5,12 @@
 class SnazeSimulation {
 private:
 
-    bool game_over{false};
+    bool game_over{false};      // Is the game over?
+    unsigned short fps;         // Numbers of frames per second
 public:
 
 
-    void initialize(int argc, char* agrv[]);
+    void initialize(int argc, char* argv[]);
     bool is_over();
     void process_events();
     void render();
