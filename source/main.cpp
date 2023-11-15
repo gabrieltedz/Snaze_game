@@ -4,16 +4,17 @@
  */
 
 #include "simulation.h"
-using namespace sg;
+
 
 int main(int argc, char* argv[]) {
+  SnazeSimulation snaze;
   // SnazeSimulation is a singleton.
-  SnazeSimulation::initialize(argc, argv);
+  snaze.initialize(argc, argv);
   // The Game Loop.
-  while (not SnazeSimulation::is_over()) {
-    SnazeSimulation::process_events();
-    SnazeSimulation::update();
-    SnazeSimulation::render();
+  while (not snaze.is_over()) {
+    snaze.process_events();
+    snaze.update();
+    snaze.render();
   }
   return 0;
 }
