@@ -172,23 +172,63 @@ void SnakeGame::read_file(){
     int columns{-1};
     int levels{0};
     std::string str;
-    
 
+    bool is_valid{false};
+    bool invalid{false};
 
     while(inputfile >> lines >> columns){
-        char matrix[lines][columns];
-
+        
+        // validation auxiliation values
+        is_valid = false;
+        invalid = false;
         // Read the rest of the line that contains lines and columns (essentially jump to next line)
         getline(inputfile,str);
 
-        // Read characters (columns * lines) times
-        for (int i = 0; i < lines; i++){
-            getline(inputfile, str);
-            for (int j = 0; j < columns; j++){
-                matrix[i][j] = str[j];
-            }
+        if(!(lines <= 100 && columns <= 100)){
+            //error!
+            // lines or columns out of range (lines,columns > 100)        
+            
+        }
+ 
+        // Allocate memory for matrix
+        char** matrix = new char*[lines];
+        for (int i = 0; i < lines; ++i) {
+            matrix[i] = new char[columns];
         }
 
+        // Read characters (columns * lines) times
+        for (int i = 0; i < lines; i++){
+            
+            // Read line
+            getline(inputfile, str);
+
+            for (int j = 0; j < columns; j++){
+                // Checks for the second aparition of the spawnpoint in the level, determining that it is in fact invalid
+                if (str[j] == '&' && is_valid == true){
+                    invalid = true;
+                    is_valid = false;
+                    break;
+                } 
+                
+                // Checks for the first aparition of the spawnpoint in the level
+                else if (str[j] == '&' && is_valid == false){
+                    is_valid = true;
+                }
+                matrix[i][j] = str[j];
+            }
+
+            if (invalid == true){
+                break;
+            } 
+
+        }
+        
+        if (is_valid == true){
+            //Level level{lines,columns,matrix};
+            //m_levels.push_back(level);
+        } else if (invalid == true){
+            // Ignore level
+        }
 
         std::cout << "completo: " << std::endl;
         for(int i = 0; i < lines; i++){
@@ -196,6 +236,12 @@ void SnakeGame::read_file(){
                 std::cout << matrix[i][j];
             } std::cout << std::endl;
         } 
+
+        // Deallocate memory for the matrix
+        for (int i = 0; i < lines; i++) {
+            delete[] matrix[i];
+        }
+        delete[] matrix;
 
         // Read characters (columns * lines) times
         /*for (unsigned short i = 0; i < lines; i++) {
@@ -211,7 +257,6 @@ void SnakeGame::read_file(){
                 std::cout << " not ok";
             }*/
     }
-
     
     inputfile.close();
 }

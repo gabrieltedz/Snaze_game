@@ -14,9 +14,11 @@ private:
     unsigned short food{10};    //!< Quantity of food pellets for the entire simulation | Default = 10
 
     std::ifstream inputfile;    //!< Name of the level input file
+    std::vector<Level> m_levels;
     
-    Level levels;
 public:
+    
+    SnakeGame() = default;
 
     /**
      * @brief Default constructor
