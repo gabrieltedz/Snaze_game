@@ -1,9 +1,9 @@
-#include "simulation.h"
+#include "snakegame.h"
 
 /**
  * @brief Help message
 */
-void SnazeSimulation::help_message(){
+void SnakeGame::help_message(){
     std::cout << "$ ./build/snaze " << std::endl;
     std::cout << "Usage: snaze [<options>] <input_level_file>" << std::endl;
     std::cout << "      Game simulation options:" << std::endl;
@@ -18,7 +18,7 @@ void SnazeSimulation::help_message(){
  * @brief Introduction message at the start of every game indicating authors, copyright, and in-game
  * values given by arguments via CLI
 */
-void SnazeSimulation::introduction_message(){
+void SnakeGame::introduction_message(){
     std::cout << std::endl;
     std::cout << "-----------------------------------------------------------" << std::endl;
     std::cout << "       ===> Welcome to the classic Snake Game! <===" << std::endl;

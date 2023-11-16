@@ -1,14 +1,16 @@
-#include "simulation.h"
+#include "snakegame.h"
 
 /**
  * @brief Read arguments from CLI, update simulation values and read level that will be played
 */
-void SnazeSimulation::initialize(int argc, char* argv[]){
+void SnakeGame::initialize(int argc, char* argv[]){
     std::string arg;
 
     // If only no argument was given, error because it means a level wasnt loaded
     if (argc == 1){
         // error!
+        std::cerr << "Error opening the file." << std::endl;
+        return exit(1);
     } 
     
     // If only one argument was given, it's either --help or the input file name
@@ -23,8 +25,9 @@ void SnazeSimulation::initialize(int argc, char* argv[]){
         
         else {
             // input level file
+            open_file(arg);
 
-            // If input level file is not valid give error notification!
+            // If input level file is not valid give error notification (already done in open_file)
         }
     } 
     // At least one optional argument and the input level file were given
@@ -109,8 +112,7 @@ void SnazeSimulation::initialize(int argc, char* argv[]){
             // input file name
             else {
                 open_file(arg);
-                // If input file name is not valid, give error
-                //error!!
+                // If input file name is not valid, give error (this is already done in open_file)
                 
                 // Don't read any argument after this
                 break;
@@ -119,19 +121,19 @@ void SnazeSimulation::initialize(int argc, char* argv[]){
     }
 } 
 
-bool SnazeSimulation::is_over(){
+bool SnakeGame::is_over(){
     return false;
 }
 
-unsigned short SnazeSimulation::ret_lives(){
+unsigned short SnakeGame::ret_lives(){
     return lives;
 }
 
-unsigned short SnazeSimulation::ret_food(){
+unsigned short SnakeGame::ret_food(){
     return food;
 }
 
-void SnazeSimulation::open_file(const std::string& filename){
+void SnakeGame::open_file(const std::string& filename){
     // Convert the string to a C-style string using c_str()
     const char* filenameCStr = filename.c_str();
 
@@ -147,7 +149,7 @@ void SnazeSimulation::open_file(const std::string& filename){
     std::cout << "opened file!" << std::endl;
 }
 
-void SnazeSimulation::read_file(){
+void SnakeGame::read_file(){
     int lines{-1};
     int columns{-1};
     int levels{0};

@@ -1,12 +1,12 @@
-#include "simulation.h"
+#include "snakegame.h"
 
 /**!
  *  This program implements the Snake simulation.
  *  @author Selan R. dos Santos
  */
 int main(int argc, char* argv[]) {
-  // Create object snaze from class SnazeSimulation
-  SnazeSimulation snaze;
+  // Create object snaze from class SnakeGame
+  SnakeGame snaze;
 
   // Read arguments from CLI, update starting game values and read level that will be played
   snaze.initialize(argc, argv);

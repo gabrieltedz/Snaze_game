@@ -1,11 +1,11 @@
-#ifndef _SIMULATION_H_
-#define _SIMULATION_H_
+#ifndef _SNAKEGAME_H_
+#define _SNAKEGAME_H_
 #include <iostream>
 #include <fstream>
 /**
  * @brief Class that contains the simulator of the snaze game
 */
-class SnazeSimulation {
+class SnakeGame {
 private:
 
     bool game_over{false};      //!< Is the game over?
@@ -19,7 +19,7 @@ public:
     /**
      * @brief Default constructor
     */
-    ~SnazeSimulation() = default;
+    ~SnakeGame() = default;
     
     /**
      * @brief Read arguments from CLI, update simulation values and read level that will be played
