@@ -13,7 +13,7 @@ private:
     unsigned short lives{5};    //!< Lives the snake has | Default = 5
     unsigned short food{10};    //!< Quantity of food pellets for the entire simulation | Default = 10
 
-    std::ifstream inputfile;
+    std::ifstream inputfile;    //!< Name of the level input file
 public:
 
     /**
@@ -52,8 +52,14 @@ public:
     */
     void introduction_message();
 
+    /**
+     * @brief Takes a string argument indicating the name for the input file and opens it 
+    */
     void open_file(const std::string& filename);
 
+    /**
+     * @brief Read the information contained in the file
+    */    
     void read_file();
 
     void process_events();

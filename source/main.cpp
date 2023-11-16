@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 
   // Read arguments from CLI, update starting game values and read level that will be played
   snaze.initialize(argc, argv);
-  snaze.read_file();
+
   // Output intro message with atualized starting game values
   snaze.introduction_message();
 

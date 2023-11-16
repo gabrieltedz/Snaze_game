@@ -119,20 +119,34 @@ void SnakeGame::initialize(int argc, char* argv[]){
             }
         }
     }
+    // Read information on file
+    read_file();
 } 
 
+/**
+ * @brief Function that returns if the game is over or not
+*/
 bool SnakeGame::is_over(){
     return false;
 }
 
+/**
+ * @brief Return starting lives
+*/
 unsigned short SnakeGame::ret_lives(){
     return lives;
 }
 
+/**
+ * @brief Return starting food amount
+*/
 unsigned short SnakeGame::ret_food(){
     return food;
 }
 
+/**
+ * @brief Takes a string argument indicating the name for the input file and opens it 
+*/
 void SnakeGame::open_file(const std::string& filename){
     // Convert the string to a C-style string using c_str()
     const char* filenameCStr = filename.c_str();
@@ -149,6 +163,9 @@ void SnakeGame::open_file(const std::string& filename){
     std::cout << "opened file!" << std::endl;
 }
 
+/**
+ * @brief Read the information contained in the file
+*/
 void SnakeGame::read_file(){
     int lines{-1};
     int columns{-1};
@@ -156,14 +173,24 @@ void SnakeGame::read_file(){
     std::string str;
 
     while(inputfile >> lines >> columns){
+        
+        // Read the rest of the line that contains lines and columns (essentially jump to next line)
+        getline(inputfile,str);
+
         // Read characters (columns * lines) times
-        for (unsigned short i = 0; i <= lines; i++) {
+        for (unsigned short i = 0; i < lines; i++) {
             getline(inputfile, str);
 
             if (str.size() == columns) {
-
+                std::cout << "ok";
+            } else {
+                std::cout << i << " str: " << str;
+                std::cout << " not ok";
             }
             std::cout << str << std::endl;
         }
+        
     }
+
+    inputfile.close();
 }
