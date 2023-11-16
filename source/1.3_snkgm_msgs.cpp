@@ -1,4 +1,4 @@
-#include "snakegame.h"
+#include "1.1_snakegame.h"
 
 /**
  * @brief Help message

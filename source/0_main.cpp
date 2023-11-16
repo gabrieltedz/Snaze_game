@@ -1,4 +1,4 @@
-#include "snakegame.h"
+#include "1.1_snakegame.h"
 
 /**!
  *  This program implements the Snake simulation.

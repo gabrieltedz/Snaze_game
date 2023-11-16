@@ -1,7 +1,7 @@
 #ifndef _SNAKEGAME_H_
 #define _SNAKEGAME_H_
-#include <iostream>
-#include <fstream>
+
+#include "2.0_level.h"
 /**
  * @brief Class that contains the simulator of the snaze game
 */
@@ -14,6 +14,8 @@ private:
     unsigned short food{10};    //!< Quantity of food pellets for the entire simulation | Default = 10
 
     std::ifstream inputfile;    //!< Name of the level input file
+    
+    Level levels;
 public:
 
     /**

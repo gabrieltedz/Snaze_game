@@ -1,5 +1,4 @@
-#include "snakegame.h"
-
+#include "1.1_snakegame.h"
 /**
  * @brief Read arguments from CLI, update simulation values and read level that will be played
 */
@@ -111,6 +110,7 @@ void SnakeGame::initialize(int argc, char* argv[]){
             
             // input file name
             else {
+                std::cout << "passou" << std::endl;
                 open_file(arg);
                 // If input file name is not valid, give error (this is already done in open_file)
                 
@@ -120,6 +120,7 @@ void SnakeGame::initialize(int argc, char* argv[]){
         }
     }
     // Read information on file
+    std::cout << "passou" << std::endl;
     read_file();
 } 
 
@@ -171,26 +172,46 @@ void SnakeGame::read_file(){
     int columns{-1};
     int levels{0};
     std::string str;
+    
+
 
     while(inputfile >> lines >> columns){
-        
+        char matrix[lines][columns];
+
         // Read the rest of the line that contains lines and columns (essentially jump to next line)
         getline(inputfile,str);
 
         // Read characters (columns * lines) times
-        for (unsigned short i = 0; i < lines; i++) {
+        for (int i = 0; i < lines; i++){
+            getline(inputfile, str);
+            for (int j = 0; j < columns; j++){
+                matrix[i][j] = str[j];
+            }
+        }
+
+
+        std::cout << "completo: " << std::endl;
+        for(int i = 0; i < lines; i++){
+            for (int j = 0; j < columns; j++){
+                std::cout << matrix[i][j];
+            } std::cout << std::endl;
+        } 
+
+        // Read characters (columns * lines) times
+        /*for (unsigned short i = 0; i < lines; i++) {
             getline(inputfile, str);
 
-            if (str.size() == columns) {
+            
+            // test to see if number of columns is right
+
+            /*if (str.size() == columns) {
                 std::cout << "ok";
             } else {
                 std::cout << i << " str: " << str;
                 std::cout << " not ok";
-            }
-            std::cout << str << std::endl;
-        }
-        
+            }*/
     }
 
+    
     inputfile.close();
 }
