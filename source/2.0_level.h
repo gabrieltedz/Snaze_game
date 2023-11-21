@@ -4,6 +4,18 @@
 #include <fstream>
 #include <vector>
 
+/**
+ * @brief Struct to give the position of a specific cell, ex the snakes head, the spawnpoint, food etc
+*/
+struct Position {
+    int p_line;
+    int p_column;
+    Position(int l = 0, int c = 0) : p_line(l), p_column(c) {}
+};
+
+/**
+ * @brief Types of cells the game can have
+*/
 enum class CellType{
     EMPTY,
     WALL,
@@ -20,6 +32,7 @@ private:
     int m_columns;    //!< Number of columns the instance of level has
     std::vector<std::vector<char>> m_map; //!< matrix of char that will be displayed
     std::vector<std::vector<CellType>> m_maze; //!< Maze with CellType for calculations
+    Position spawn_point;
 public:
     /**
      * @brief Contructor that initializes lines, columns and map
@@ -40,6 +53,11 @@ public:
      * @brief Display CellType matrix
     */
     void display_maze();
+
+    /**
+     * @brief Return spawn position of current level
+    */
+    Position ret_spawn_position();
 };
 
 #endif

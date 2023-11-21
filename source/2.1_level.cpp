@@ -18,7 +18,7 @@ void Level::read_level_maze(){
 
     // Current char in the char matrix
     char current_char;
-
+    
     CellType type;
 
     // Resize m_maze
@@ -39,6 +39,8 @@ void Level::read_level_maze(){
 
                 case '&':
                 type = CellType::SPAWN_POINT;
+                spawn_point.p_line = i;
+                spawn_point.p_column = j;
                 break;
 
                 case ' ':
@@ -82,4 +84,8 @@ void Level::display_maze(){
             std::cout << current_char;
         } std::cout << std::endl;
     }
+}
+
+Position Level::ret_spawn_position(){
+    return spawn_point;
 }

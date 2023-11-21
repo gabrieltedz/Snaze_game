@@ -2,6 +2,9 @@
 #define _SNAKEGAME_H_
 
 #include "2.0_level.h"
+
+
+
 /**
  * @brief Class that contains the simulator of the snaze game
 */
@@ -15,6 +18,7 @@ private:
 
     std::ifstream inputfile;    //!< Name of the level input file
     std::vector<Level> m_levels;
+    
     
 public:
     

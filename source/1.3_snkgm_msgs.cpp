@@ -24,12 +24,11 @@ void SnakeGame::introduction_message(){
     std::cout << "       ===> Welcome to the classic Snake Game! <===" << std::endl;
     std::cout << "             copyright DIMAp / UFRN 2023" << std::endl;
     std::cout << "-----------------------------------------------------------" << std::endl;
-    std::cout << " Levels loaded: 0 | Snake lives: " << ret_lives() << " | Apples to eat: " << ret_food() << std::endl;
+    std::cout << " Levels loaded: " << m_levels.size() << " | Snake lives: " << ret_lives() << " | Apples to eat: " << ret_food() << std::endl;
     std::cout << " Clear all levels to win the game. Good luck!!" << std::endl;
     std::cout << "-----------------------------------------------------------" << std::endl;
     std::cout << ">>> Press <ENTER> to start the game!" << std::endl;
     std::cout << std::endl;
     std::cout << "Lives: " << ret_lives() << " | Score: 0       | Food eaten: 0 out of " << ret_food() << std::endl;
     std::cout << "-----------------------------------------------------------" << std::endl;
-
 }

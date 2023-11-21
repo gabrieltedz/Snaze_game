@@ -240,6 +240,8 @@ void SnakeGame::read_file(){
             // Add valid level to m_levels
             m_levels.push_back(level);
 
+            std::cout << "Posição spawn, line: " << level.ret_spawn_position().p_line << ", column: " << level.ret_spawn_position().p_column << std::endl;
+
             // Original char matrix
             std::cout << "completo char: " << std::endl;
             level.display();
@@ -250,10 +252,6 @@ void SnakeGame::read_file(){
         } else if (invalid == true){
             // Ignore level
         }
-
-        
-
-        
 
         // Read characters (columns * lines) times
         /*for (unsigned short i = 0; i < lines; i++) {
