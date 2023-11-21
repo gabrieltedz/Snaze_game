@@ -35,6 +35,8 @@ public:
      * @brief Reads a matrix of char and encodes it into the customized maze setup
     */
     void read_level_maze();
+
+    void display_maze();
 };
 
 #endif

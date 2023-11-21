@@ -227,12 +227,20 @@ void SnakeGame::read_file(){
         }
         
         if (is_valid == true){
+            // Initialize level with lines, columns and original char matrix
             Level level{lines,columns, matrix};
+
+            // Create CellType matrix
             level.read_level_maze();
+
+            // Add valid level to m_levels
             m_levels.push_back(level);
 
-            std::cout << "completo: " << std::endl;
+            std::cout << "completo char: " << std::endl;
             level.display();
+
+            std::cout << "completo cell_type: " << std::endl;
+            level.display_maze();
         } else if (invalid == true){
             // Ignore level
         }
