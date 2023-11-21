@@ -32,10 +32,13 @@ public:
     void display();
 
     /**
-     * @brief Reads a matrix of char and encodes it into the customized maze setup
+     * @brief Reads a matrix of char and encodes it into the customized CellType maze setup
     */
     void read_level_maze();
 
+    /**
+     * @brief Display CellType matrix
+    */
     void display_maze();
 };
 

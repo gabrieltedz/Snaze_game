@@ -168,6 +168,7 @@ void SnakeGame::open_file(const std::string& filename){
  * @brief Read the information contained in the file
 */
 void SnakeGame::read_file(){
+    // Initialize variables as default
     int lines{-1};
     int columns{-1};
     int levels{0};
@@ -177,6 +178,7 @@ void SnakeGame::read_file(){
     bool is_valid{false};
     bool invalid{false};
 
+    // Read the lines and columns of levels in the file
     while(inputfile >> lines >> columns){
   
         // validation auxiliation values
@@ -220,12 +222,14 @@ void SnakeGame::read_file(){
                 matrix[i][j] = str[j];
             }
 
+            // If invalid, break
             if (invalid == true){
                 break;
             } 
 
         }
         
+        // If valid
         if (is_valid == true){
             // Initialize level with lines, columns and original char matrix
             Level level{lines,columns, matrix};
@@ -236,9 +240,11 @@ void SnakeGame::read_file(){
             // Add valid level to m_levels
             m_levels.push_back(level);
 
+            // Original char matrix
             std::cout << "completo char: " << std::endl;
             level.display();
 
+            // Celltype matrix
             std::cout << "completo cell_type: " << std::endl;
             level.display_maze();
         } else if (invalid == true){

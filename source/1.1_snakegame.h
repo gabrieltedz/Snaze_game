@@ -18,10 +18,13 @@ private:
     
 public:
     
+    /**
+     * @brief Default constructor
+    */
     SnakeGame() = default;
 
     /**
-     * @brief Default constructor
+     * @brief Default deconstructor
     */
     ~SnakeGame() = default;
     

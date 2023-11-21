@@ -20,7 +20,6 @@ int main(int argc, char* argv[]) {
     snaze.update();
     snaze.render();
   }*/
-  std::cout << "oie" << std::endl;
   return 0;
 }
 

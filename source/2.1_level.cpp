@@ -1,5 +1,8 @@
 #include "2.0_level.h"
 
+/**
+ * @brief Display char matrix
+*/
 void Level::display(){
     for(int i{0}; i < m_lines; i++){
         for (int j{0}; j < m_columns; j++){
@@ -8,16 +11,21 @@ void Level::display(){
     }
 }
 
+/**
+ * @brief Read char matrix as argument, encode it into a CellType matrix 
+*/
 void Level::read_level_maze(){
 
+    // Current char in the char matrix
     char current_char;
+
     CellType type;
-    m_maze.resize(m_lines);
-    
+
+    // Resize m_maze
+    m_maze.resize(m_lines, std::vector<CellType>(m_columns, CellType::EMPTY));
 
     for(int i{0}; i < m_lines; i++){
-
-        for (int j{0}; j < m_columns;j++){
+        for (int j{0}; j < m_columns; j++){
             current_char = m_map[i][j];
 
             switch(current_char){
@@ -38,7 +46,7 @@ void Level::read_level_maze(){
                 break;
             }
 
-            m_maze[i].push_back(type);
+            m_maze[i][j] = type;
         }
     }
 }
