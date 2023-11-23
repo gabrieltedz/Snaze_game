@@ -79,6 +79,14 @@ void Level::display_maze(){
                 case (CellType::EMPTY):
                 current_char = ' ';
                 break;
+            
+                case(CellType::FOOD):
+                current_char = ' ';
+                break;
+
+                case(CellType::SNAKE_HEAD):
+                current_char = '^';
+                break;
             }
 
             std::cout << current_char;

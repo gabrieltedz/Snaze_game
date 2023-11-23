@@ -3,6 +3,10 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <queue>
+
+#include "../lib/text.color.h"
+
 
 /**
  * @brief Struct to give the position of a specific cell, ex the snakes head, the spawnpoint, food etc
@@ -53,6 +57,7 @@ public:
      * @brief Display CellType matrix
     */
     void display_maze();
+
 
     /**
      * @brief Return spawn position of current level

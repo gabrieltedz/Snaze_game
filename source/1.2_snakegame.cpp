@@ -269,4 +269,53 @@ void SnakeGame::read_file(){
     }
     
     inputfile.close();
+
+}
+
+
+//construtor
+SnakeGame::SnakeGame(){
+    food = 5;
+    lives = 10;
+    fps = 4;
+
+    game_over = false;
+    m_game_state = game_state::STARTING;
+}
+
+void SnakeGame::process_events(){
+
+}
+
+void SnakeGame::update(){
+    if(m_game_state == game_state::STARTING){
+
+    }
+    else if(m_game_state == game_state::NEW_PATH){
+        //encontrar os caminho a ser seguido
+
+        m_game_state = game_state::UPDATE_DIRECTION;
+    }
+
+    else if(m_game_state == game_state::UPDATE_DIRECTION){
+
+    }
+    else if(m_game_state == game_state::NEW_LEVEL){
+        //muda o level, altera a matriz com os dados.
+
+    }
+
+    else if(m_game_state == game_state::FINISHED_PUZZLE){
+        //emprimir mensagem de vitoria.
+        //finalizar o game.
+    }
+
+    else if(m_game_state == game_state::GAME_OVER){
+        //imprimir mensagem de derrota.
+    }
+
+}
+
+void SnakeGame::render(){
+
 }
