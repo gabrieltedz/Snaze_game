@@ -15,11 +15,12 @@ int main(int argc, char* argv[]) {
   snaze.introduction_message();
 
   // The Game Loop.
-  /*while (not snaze.is_over()) {
+  while (not snaze.is_over()) {
     snaze.process_events();
     snaze.update();
     snaze.render();
-  }*/
+  }
+
   return 0;
 }
 

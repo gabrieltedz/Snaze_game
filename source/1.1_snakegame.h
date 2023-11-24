@@ -35,21 +35,22 @@ class SnakeGame {
 private:
 
     enum class game_state : uint {
-        STARTING,  //!< Beginning the game.
-        //====================================================
-        PLAYING_MODE,  //!< Reading user command (Play sub-menu).
-        //----------------------------------------------------
-        NEW_PATH,             //!< encontrar o caminho a ser seguido.
-        UPDATE_DIRECTION,        //!< Atualiza a matriz com a nova posiçãod da cobra.
-        NEW_LEVEL,        //!< User wants to start a new game.
-        CONFIRMING_FINISHED_LEVEL,  //!< User has already started a match. We need
-                                    //!< to confime s/he wants to bail out.
-        PRINT_DISPLAY,              //!< imprime o jogo. 
-
-        // ====================================================
+        STARTING = 0,                       //!< Beginning the game.
+        PLAYING_MODE,                       //!< Reading user command (Play sub-menu).
+        NEW_FOOD,                           //!< Gera a posição da comida.
+        NEW_PATH,                           //!< encontrar o caminho a ser seguido.
+        SNAKE_DIE,
+        UPDATE_DIRECTION,                   //!< Atualiza a matriz com a nova posiçãod da cobra.
+        RANDOM_DIRECTION,
+        NEW_LEVEL,                          //!< User wants to start a new game.
+        CONFIRMING_FINISHED_LEVEL,          //!< User has already started a match. We need
+        PRINT_DISPLAY,                      //!< imprime o jogo. 
         GAME_OVER,
-        FINISHED_PUZZLE  //!< User has completed a puzzle.
+        FINISHED_PUZZLE                     //!< User has completed a puzzle.
     };
+
+
+
     bool game_over;      //!< Is the game over?
     unsigned short fps;      //!< Numbers of frames per second | Default = 4
     unsigned short lives;    //!< Lives the snake has | Default = 5
@@ -60,15 +61,17 @@ private:
 
     
 public:
-
     game_state m_game_state; ///ESTADOS DO GAME 
-    std::queue<char> path;  //fila com as direções a ser seguida 
-    //podemos colocar um enum com as direções
+    direction m_direction;
+    std::queue<direction> path;  //fila com as direções a ser seguida
+    Level level;
 
-    char* appleEmoji = u8"\U0001F34E";
+    size_t score;
+    size_t snake_size_body;
+
     
     /**
-     * @brief Default constructor
+     * @brief constructor
     */
     SnakeGame();
 
@@ -86,11 +89,13 @@ public:
      * @brief Function that returns if the game is over or not
     */
     bool is_over();
-
+ 
     /**
      * @brief Return starting lives
     */
     unsigned short ret_lives();
+
+    size_t ret_score();
 
     /**
      * @brief Return starting food amount
@@ -107,6 +112,9 @@ public:
      * values given by arguments via CLI
     */
     void introduction_message();
+
+
+    void data_game();
 
     /**
      * @brief Takes a string argument indicating the name for the input file and opens it 

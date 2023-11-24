@@ -1,4 +1,20 @@
 #include "1.1_snakegame.h"
+
+
+//construtor
+SnakeGame::SnakeGame(){
+    food = 5;
+    lives = 10;
+    fps = 4;
+
+    score = 0;
+    snake_size_body = 2;
+
+    game_over = false;
+    m_game_state = game_state::STARTING;
+}
+
+
 /**
  * @brief Read arguments from CLI, update simulation values and read level that will be played
 */
@@ -145,6 +161,10 @@ unsigned short SnakeGame::ret_food(){
     return food;
 }
 
+size_t SnakeGame::ret_score(){
+    return score;
+}
+ 
 /**
  * @brief Takes a string argument indicating the name for the input file and opens it 
 */
@@ -232,7 +252,9 @@ void SnakeGame::read_file(){
         // If valid
         if (is_valid == true){
             // Initialize level with lines, columns and original char matrix
-            Level level{lines,columns, matrix};
+            level.m_lines = lines;
+            level.m_columns = columns;
+            level.m_map = matrix;
 
             // Create CellType matrix
             level.read_level_maze();
@@ -273,15 +295,6 @@ void SnakeGame::read_file(){
 }
 
 
-//construtor
-SnakeGame::SnakeGame(){
-    food = 5;
-    lives = 10;
-    fps = 4;
-
-    game_over = false;
-    m_game_state = game_state::STARTING;
-}
 
 void SnakeGame::process_events(){
 
@@ -289,33 +302,105 @@ void SnakeGame::process_events(){
 
 void SnakeGame::update(){
     if(m_game_state == game_state::STARTING){
-
+        //std::string nada;
+        std::cin.ignore();
+        //std::getline(std::cin, nada);
+        m_game_state = game_state::NEW_FOOD;
     }
+
+    else if(m_game_state == game_state::NEW_FOOD){
+        level.pos_new_food();
+
+        m_game_state = game_state::NEW_PATH;
+    }
+
     else if(m_game_state == game_state::NEW_PATH){
         //encontrar os caminho a ser seguido
 
+        path = level.new_path();
         m_game_state = game_state::UPDATE_DIRECTION;
     }
 
     else if(m_game_state == game_state::UPDATE_DIRECTION){
+        if(path.empty()){
+            //level.delete_food();
+            //m_game_state = game_state::NEW_LEVEL;
+            m_game_state = game_state::RANDOM_DIRECTION;
+        }
+        else{
+            level.snake_move(path.front(), snake_size_body);
+            path.pop();
+        }
+
 
     }
+
+    else if(m_game_state == game_state::RANDOM_DIRECTION){
+        level.snake_move(level.path_random(snake_size_body), snake_size_body);
+
+        m_game_state = game_state::UPDATE_DIRECTION;
+    }
+
+    else if(m_game_state == game_state::SNAKE_DIE){
+
+    }
+
     else if(m_game_state == game_state::NEW_LEVEL){
+        snake_size_body = 1;
         //muda o level, altera a matriz com os dados.
+
+        //level.delete_food();
+        m_game_state = game_state::FINISHED_PUZZLE;
 
     }
 
     else if(m_game_state == game_state::FINISHED_PUZZLE){
         //emprimir mensagem de vitoria.
         //finalizar o game.
+        exit(1);
     }
 
     else if(m_game_state == game_state::GAME_OVER){
         //imprimir mensagem de derrota.
+
+        exit(1);
     }
 
 }
 
 void SnakeGame::render(){
+
+    if(m_game_state == game_state::NEW_PATH){
+        //encontrar os caminho a ser seguido
+
+    }
+
+    else if(m_game_state == game_state::UPDATE_DIRECTION){
+
+
+        std::chrono::milliseconds duration{1000 / fps};
+        std::this_thread::sleep_for(duration);
+        
+        data_game();
+        level.display_run_game();
+        
+    }
+
+    else if(m_game_state == game_state::RANDOM_DIRECTION){
+
+
+    }
+
+
+    else if(m_game_state == game_state::FINISHED_PUZZLE){
+        //emprimir mensagem de vitoria.
+        //finalizar o game.
+
+    }
+
+    else if(m_game_state == game_state::GAME_OVER){
+        //imprimir mensagem de derrota.
+
+    }
 
 }
