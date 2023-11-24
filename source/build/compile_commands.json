@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/build",
+  "command": "/usr/bin/c++    -Wall  -o CMakeFiles/snaze.dir/0_main.cpp.o -c /home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/0_main.cpp",
+  "file": "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/0_main.cpp"
+},
+{
+  "directory": "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/build",
+  "command": "/usr/bin/c++    -Wall  -o CMakeFiles/snaze.dir/1.2_snakegame.cpp.o -c /home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/1.2_snakegame.cpp",
+  "file": "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/1.2_snakegame.cpp"
+},
+{
+  "directory": "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/build",
+  "command": "/usr/bin/c++    -Wall  -o CMakeFiles/snaze.dir/1.3_snkgm_msgs.cpp.o -c /home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/1.3_snkgm_msgs.cpp",
+  "file": "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/1.3_snkgm_msgs.cpp"
+},
+{
+  "directory": "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/build",
+  "command": "/usr/bin/c++    -Wall  -o CMakeFiles/snaze.dir/2.1_level.cpp.o -c /home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/2.1_level.cpp",
+  "file": "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/2.1_level.cpp"
+}
+]

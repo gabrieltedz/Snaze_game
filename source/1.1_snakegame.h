@@ -68,6 +68,7 @@ public:
 
     size_t score;
     size_t snake_size_body;
+    size_t foods;
 
     
     /**
@@ -96,6 +97,7 @@ public:
     unsigned short ret_lives();
 
     size_t ret_score();
+
 
     /**
      * @brief Return starting food amount

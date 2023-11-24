@@ -8,7 +8,8 @@ SnakeGame::SnakeGame(){
     fps = 4;
 
     score = 0;
-    snake_size_body = 2;
+    snake_size_body = 1;
+    foods = 0;
 
     game_over = false;
     m_game_state = game_state::STARTING;
@@ -296,6 +297,7 @@ void SnakeGame::read_file(){
 
 
 
+
 void SnakeGame::process_events(){
 
 }
@@ -309,9 +311,15 @@ void SnakeGame::update(){
     }
 
     else if(m_game_state == game_state::NEW_FOOD){
-        level.pos_new_food();
+        if(foods == ret_food()){
+            m_game_state = game_state::NEW_LEVEL;
+        }
+        else{
+            level.pos_new_food();
 
-        m_game_state = game_state::NEW_PATH;
+            m_game_state = game_state::NEW_PATH;
+
+        }
     }
 
     else if(m_game_state == game_state::NEW_PATH){
@@ -328,7 +336,7 @@ void SnakeGame::update(){
             m_game_state = game_state::RANDOM_DIRECTION;
         }
         else{
-            level.snake_move(path.front(), snake_size_body);
+            level.snake_move(path.front(), snake_size_body, foods);
             path.pop();
         }
 
@@ -336,13 +344,29 @@ void SnakeGame::update(){
     }
 
     else if(m_game_state == game_state::RANDOM_DIRECTION){
-        level.snake_move(level.path_random(snake_size_body), snake_size_body);
+        auto temp = snake_size_body;
+        auto aux = level.path_random();
 
-        m_game_state = game_state::UPDATE_DIRECTION;
+        if(aux == direction::UNDEFINED){
+            m_game_state = game_state::SNAKE_DIE;
+        }
+        else{
+            bool verify = level.snake_move(aux, snake_size_body, foods);
+        }
+
+
+        if(temp < snake_size_body) {
+            foods = snake_size_body - 1;
+            m_game_state = game_state::NEW_FOOD;
+        }
+
     }
 
     else if(m_game_state == game_state::SNAKE_DIE){
-
+        level.snake_head.p_column = level.spawn_point.p_column;
+        level.snake_head.p_line = level.spawn_point.p_line;
+        lives -= 1;
+        snake_size_body = 1;
     }
 
     else if(m_game_state == game_state::NEW_LEVEL){
@@ -387,6 +411,12 @@ void SnakeGame::render(){
     }
 
     else if(m_game_state == game_state::RANDOM_DIRECTION){
+
+        std::chrono::milliseconds duration{1000 / fps};
+        std::this_thread::sleep_for(duration);
+        
+        data_game();
+        level.display_run_game();
 
 
     }

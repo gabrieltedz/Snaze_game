@@ -37,10 +37,14 @@ enum class CellType{
 
 enum class direction : uint {
     FORWARD = 0,                         //!< Represents the forward direction.
-    BACKWARD,                            //!< Represents the backward direction.
-    LEFT,                                //!< Represents the left direction.
-    RIGHT                                //!< Represents the right direction.
+    BACKWARD = 1,                            //!< Represents the backward direction.
+    LEFT = 2,                                //!< Represents the left direction.
+    RIGHT = 3,                               //!< Represents the right direction.
+    UNDEFINED = 4
 };
+
+
+
 
 
 class Level{
@@ -51,6 +55,8 @@ public:
     Position m_pos_food;
     Position snake_head; 
     std::queue<Position> snake_tail;
+
+    //direction direction_prev;
 
 
     int m_lines;  //!< Number of lines the instance of level has
@@ -87,9 +93,9 @@ public:
 
     void delete_food();
 
-    void snake_move(direction m_direction, size_t& size_body);
+    bool snake_move(direction m_direction, size_t& size_body, size_t& food);
 
-    direction path_random(size_t& size_body);
+    direction path_random();
 
     std::queue<direction> new_path();
 

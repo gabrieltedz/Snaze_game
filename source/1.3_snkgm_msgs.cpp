@@ -29,7 +29,7 @@ void SnakeGame::introduction_message(){
     std::cout << "-----------------------------------------------------------" << std::endl;
     std::cout << ">>> Press <ENTER> to start the game!" << std::endl;
     std::cout << std::endl;
-    std::cout << "Lives: " << ret_lives() << " | Score: 0       | Food eaten: 0 out of " << ret_food() << std::endl;
+    std::cout << "Lives: " << ret_lives() << " | Score: 0       | Food eaten:" << foods<< " out of " << ret_food() << std::endl;
     std::cout << "-----------------------------------------------------------" << std::endl;
 }
 
@@ -37,6 +37,6 @@ void SnakeGame::data_game(){
     std::cout << "\n\nLives: ";
     for (size_t i = 0; i < ret_lives(); i++){std::cout << "❤️";}
      
-    std::cout << " | Score: " << ret_score() << " | Food eaten: 0 out of " << ret_food() << std::endl;
+    std::cout << " | Score: " << ret_score() << " | Food eaten: " << foods << " out of " << ret_food() << std::endl;
     std::cout << "-----------------------------------------------------------" << std::endl;
 }
