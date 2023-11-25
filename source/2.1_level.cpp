@@ -184,8 +184,9 @@ void Level::delete_food(){
  * When this function is called there is already a food in the maze
 */
 std::queue<direction> Level::new_path(){
+
     // Path that will be taken
-    std::queue<direction> teste;
+    std::queue<direction> path;
 
     // Auxiliary char matrix to help the algorithm
     std::vector<std::vector<char>> matrix_char;
@@ -193,29 +194,28 @@ std::queue<direction> Level::new_path(){
     // Auxiliary value position matrix to help the algorithm
     std::vector<std::vector<int>> matrix_value;
 
-    CellType type;
-    char character;
     Position food; // Position of current food
     Position head_of_snake; // Position of current head of snake
+    CellType type;
+    char character;
 
-    // Resizing matrix_char
+    // Resizing both matrixes
     matrix_char.resize(m_lines);
-
-    // Resizing matrix_value
     matrix_value.resize(m_lines);
     for(int i{0}; i < m_lines; i++){
         matrix_char[i].resize(m_columns);
         matrix_value[i].resize(m_columns);
     }
 
-    // Initialize all value of matrix_value as -1;
+    // Initialize all value of matrix_value as -3;
     for(int i{0}; i < m_lines; i++){
         for (int j{0}; j < m_columns; j++){
             matrix_value[i][j] = -3;
         }
     }
     
-    // Converter matriz enum em matriz de char
+    // Converter matriz de cellType em matriz de char para 
+    // Convert matrix of celltype into matrix of char for better visualization
     for(int i{0}; i < m_lines; i++){
         for (int j{0}; j < m_columns; j++){
             type = m_maze[i][j];
@@ -295,7 +295,6 @@ std::queue<direction> Level::new_path(){
             std::cout << matrix_char[i][j];
         } std::cout << std::endl;
     }
-    //teste.push(direction::FORWARD);
 
     // Até aqui sai a matriz de char normal que aparece no terminal
 
@@ -372,16 +371,16 @@ std::queue<direction> Level::new_path(){
 
     switch (closest_direction) {
         case 0:
-            teste.push(direction::RIGHT);
+            path.push(direction::RIGHT);
             break;
         case 1:
-            teste.push(direction::BACKWARD);
+            path.push(direction::BACKWARD);
             break;
         case 2:
-            teste.push(direction::LEFT);
+            path.push(direction::LEFT);
             break;
         case 3:
-            teste.push(direction::FORWARD);
+            path.push(direction::FORWARD);
             break;
         default:
             std::cout << "Deu erro, acho que a cobra não tem path para seguir" << std::endl;
@@ -396,16 +395,16 @@ std::queue<direction> Level::new_path(){
             if (isValid(newX, newY, m_lines, m_columns) && matrix_value[newX][newY] == (current.value + 1)) {
                 switch (k) {
                     case 0:
-                        teste.push(direction::RIGHT);
+                        path.push(direction::RIGHT);
                         break;
                     case 1:
-                        teste.push(direction::BACKWARD);
+                        path.push(direction::BACKWARD);
                         break;
                     case 2:
-                        teste.push(direction::LEFT);
+                        path.push(direction::LEFT);
                         break;
                     case 3:
-                        teste.push(direction::FORWARD);
+                        path.push(direction::FORWARD);
                         break;
                 }
                 current.p_line = newX;
@@ -416,7 +415,7 @@ std::queue<direction> Level::new_path(){
         }
     }
 
-    return teste;
+    return path;
 }
 
 direction Level::path_random(size_t& size_body){
