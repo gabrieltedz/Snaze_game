@@ -17,9 +17,9 @@ void SnakeGame::help_message(){
 /** 
  * @brief Introduction message at the start of every game indicating authors, copyright, and in-game
  * values given by arguments via CLI
-*/
-
-
+ * 
+ * This message indicates authors, copyright, and in-game values given by arguments via CLI.
+ */
 void SnakeGame::introduction_message() {
     snake_display();
     std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
@@ -41,11 +41,15 @@ void SnakeGame::introduction_message() {
     std::cout << Color::tcolor(" | Food eaten: ", Color::BRIGHT_WHITE, Color::BOLD)  << Color::tcolor(std::to_string(foods), Color::BRIGHT_WHITE, Color::BOLD);
     std::cout << Color::tcolor(" out of ", Color::BRIGHT_WHITE, Color::BOLD)  << Color::tcolor(std::to_string(ret_food()), Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
 
-
     std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
 }
 
 
+/**
+ * @brief Displays the current game data.
+ * 
+ * This function is responsible for displaying the current state of the game data.
+ */
 void SnakeGame::data_game(){
     std::cout << Color::tcolor("\n\nLives: ", Color::BRIGHT_WHITE, Color::BOLD);
     for (size_t i = 0; i < ret_lives(); i++){std::cout << Color::tcolor("❤️", Color::BRIGHT_RED);}
@@ -61,7 +65,11 @@ void SnakeGame::data_game(){
 }
 
 
-
+/**
+ * @brief Displays the game over message.
+ * 
+ * This function is responsible for displaying the game over message.
+ */
 void SnakeGame::game_over_display() {
     std::cout << std::endl << std::endl;
     std::cout << Color::tcolor("  ███   ███  █     █ █████     ███  █   █ █████ ████   ", Color::BRIGHT_RED) << std::endl;
@@ -71,7 +79,11 @@ void SnakeGame::game_over_display() {
     std::cout << Color::tcolor("  ███  █   █ █     █ █████     ███    █   █████ █   ██ ", Color::BRIGHT_RED) << std::endl;
 }
 
-
+/**
+ * @brief Displays an alternative game over message.
+ * 
+ * This function is an alternative display for the game over message.
+ */
 void SnakeGame::game_over2_display() {
     std::cout << std::endl << std::endl;
     std::cout << Color::tcolor(" █   █  ███  █   █    █      ███   ████ █████ ", Color::BRIGHT_RED) << std::endl;
@@ -81,6 +93,11 @@ void SnakeGame::game_over2_display() {
     std::cout << Color::tcolor("   █    ███   ███      ████  ███  ████  █████ ", Color::BRIGHT_RED) << std::endl;
 }
 
+/**
+ * @brief Displays the game win message.
+ * 
+ * This function is responsible for displaying the game win message.
+ */
 void SnakeGame::game_win_display() {
     std::cout << std::endl << std::endl;
     std::cout << Color::tcolor("        █   █  ███  █   █    █ █ █ █  ██  █ ", Color::BRIGHT_GREEN) << std::endl;
@@ -90,6 +107,12 @@ void SnakeGame::game_win_display() {
     std::cout << Color::tcolor("          █    ███   ███      ███  █  █ ███ ", Color::BRIGHT_GREEN) << std::endl;
 }
 
+
+/**
+ * @brief Displays a "snake" entry message.
+ * 
+ * This function is responsible for displaying the entry message when starting the game, which says "snake".
+ */
 void SnakeGame::snake_display() {
     std::cout << std::endl << std::endl;
     std::cout << Color::tcolor("        ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●", Color::BRIGHT_YELLOW) << std::endl;

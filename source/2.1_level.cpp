@@ -59,46 +59,6 @@ void Level::read_level_maze(){
     }
 }
 
-// void Level::display_maze(){
-//     std::cout << "display maze:" << std::endl;
-
-//     CellType type;
-//     char current_char;
-//     for(int i{0}; i < m_lines; i++){
-
-//         for (int j{0}; j < m_columns; j++){
-//             type = m_maze[i][j];
-
-//             switch(type){
-//                 case (CellType::WALL):
-//                 current_char = '#';
-//                 break;
-
-//                 case (CellType::INVISIBLE_WALL):
-//                 current_char = '.';
-//                 break;
-
-//                 case (CellType::SPAWN_POINT):
-//                 current_char = '&';
-//                 break;
-
-//                 case (CellType::EMPTY):
-//                 current_char = ' ';
-//                 break;
-            
-//                 // case(CellType::FOOD):
-//                 // current_char = ' ';
-//                 // break;
-
-//                 // case(CellType::SNAKE_HEAD):
-//                 // current_char = '^';
-//                 // break;
-//             }
-
-//             std::cout << current_char;
-//         } std::cout << std::endl;
-//     }
-// }
 
 void Level::display_run_game(){
     
@@ -156,11 +116,17 @@ void Level::display_run_game(){
     }
 }
 
+
+//brief Deletes the food item from the level.
+//This function removes the food item from the level by updating the corresponding cell to EMPTY.
 void Level::delete_food(){
     m_maze[m_pos_food.p_line][m_pos_food.p_column] = CellType::EMPTY;
 }
 
 
+
+//@brief Generates the position for a new food item. 
+//This function randomly selects a valid position in the maze and sets it as the new food location.
 void Level::pos_new_food(){
 
     bool pos_valid{false};
@@ -180,6 +146,14 @@ void Level::pos_new_food(){
     }
 }
 
+/**
+ * @brief Resets the position and body of the snake.
+ * 
+ * This function resets the position and body of the snake in the level. It clears the snake's tail
+ * from the maze, sets the snake's head position to the spawn point, and resets the body size.
+ * 
+ * @param size_body The size of the snake's body, which is updated to 1 after the reset.
+ */
 void Level::reset_snake(size_t& size_body){
 
 
@@ -199,185 +173,172 @@ void Level::reset_snake(size_t& size_body){
 }
 
 std::queue<direction> Level::new_path(){
-    std::queue<direction> teste;
-    // teste.push(direction::LEFT);
-    // teste.push(direction::BACKWARD);
-    // teste.push(direction::RIGHT);
-    // teste.push(direction::FORWARD);
-    // teste.push(direction::LEFT);
-    // teste.push(direction::BACKWARD);
-    // teste.push(direction::RIGHT);
-    // teste.push(direction::FORWARD);
+    std::queue<direction> direction_sanze;
+    // direction_sanze.push(direction::LEFT);
+    // direction_sanze.push(direction::BACKWARD);
+    // direction_sanze.push(direction::RIGHT);
+    // direction_sanze.push(direction::FORWARD);
+    // direction_sanze.push(direction::LEFT);
+    // direction_sanze.push(direction::BACKWARD);
+    // direction_sanze.push(direction::RIGHT);
+    // direction_sanze.push(direction::FORWARD);
 
-    return teste;
+    return direction_sanze;
 }
 
-direction Level::path_random(){
-    direction teste;
+/**
+ * @brief Generates a random direction for the snake to follow, avoiding walls and its own body.
+ * 
+ * This function randomly selects a direction for the snake to move, ensuring that the chosen path
+ * is not obstructed by walls or the snake's body.
+ * 
+ * @return A randomly selected direction for the snake.
+ */
+direction Level::path_random() {
+    // Chosen direction for the snake's movement.
+    direction direction_sanze;
+
+    // Random number determining the snake's movement direction.
     int random;
+
+    // Flag indicating the validity of the generated path.
     bool path_valid{false};
 
 
-    while(!path_valid){
-
-        int colunm = snake_head.p_column;
+    // Continue generating a random direction until a valid path is found
+    while (!path_valid) {
+        int column = snake_head.p_column;
         int line = snake_head.p_line;
 
-        
+        // Generate a random number (0 to 3) representing a direction
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> distribution(0, 3);
         random = distribution(gen);
 
-        if ((m_maze[line-1][colunm] == CellType::WALL || m_maze[line-1][colunm] == CellType::SNAKE_BODY)){
-            if(m_maze[line+1][colunm] == CellType::WALL || m_maze[line+1][colunm] == CellType::SNAKE_BODY){
-                if(m_maze[line][colunm-1] == CellType::WALL || m_maze[line][colunm-1] == CellType::SNAKE_BODY){
-                    if(m_maze[line][colunm+1] == CellType::WALL || m_maze[line][colunm+1] == CellType::SNAKE_BODY){
-                        random = 4;
-                    }
-                }
-            }
+        // Check if there's a wall or snake body in all directions, set random to 4 if so
+        if ((m_maze[line - 1][column] == CellType::WALL || m_maze[line - 1][column] == CellType::SNAKE_BODY) &&
+            (m_maze[line + 1][column] == CellType::WALL || m_maze[line + 1][column] == CellType::SNAKE_BODY) &&
+            (m_maze[line][column - 1] == CellType::WALL || m_maze[line][column - 1] == CellType::SNAKE_BODY) &&
+            (m_maze[line][column + 1] == CellType::WALL || m_maze[line][column + 1] == CellType::SNAKE_BODY)) {
+            random = 4;
         }
 
-
-        //forward
-        if (random == 0){
+        // Check and update positions based on the randomly selected direction
+        if (random == 0) { // Forward
             line -= 1;
-
-            if (m_maze[line][colunm] == CellType::EMPTY || m_maze[line][colunm] == CellType::FOOD){
-                teste = direction::FORWARD;
-
+            if (m_maze[line][column] == CellType::EMPTY || m_maze[line][column] == CellType::FOOD) {
+                direction_sanze = direction::FORWARD;
                 path_valid = true;
             }
-        }
-
-        else if(random == 1){
+        } else if (random == 1) { // Backward
             line += 1;
-
-            if (m_maze[line][colunm] == CellType::EMPTY || m_maze[line][colunm] == CellType::FOOD){
-
-                teste = direction::BACKWARD;
-
+            if (m_maze[line][column] == CellType::EMPTY || m_maze[line][column] == CellType::FOOD) {
+                direction_sanze = direction::BACKWARD;
                 path_valid = true;
             }
-        }
-
-        else if (random == 2){
-            colunm -= 1;
-
-            if (m_maze[line][colunm] == CellType::EMPTY || m_maze[line][colunm] == CellType::FOOD){
-                teste = direction::LEFT;
-
+        } else if (random == 2) { // Left
+            column -= 1;
+            if (m_maze[line][column] == CellType::EMPTY || m_maze[line][column] == CellType::FOOD) {
+                direction_sanze = direction::LEFT;
                 path_valid = true;
             }
-        }
-
-
-        else if (random == 3){
-            colunm += 1;
-
-            if (m_maze[line][colunm] == CellType::EMPTY || m_maze[line][colunm] == CellType::FOOD){
-                teste = direction::RIGHT;
-
+        } else if (random == 3) { // Right
+            column += 1;
+            if (m_maze[line][column] == CellType::EMPTY || m_maze[line][column] == CellType::FOOD) {
+                direction_sanze = direction::RIGHT;
                 path_valid = true;
             }
-        }
-        
-        else if(random == 4){
-            teste = direction::UNDEFINED;
+        } else if (random == 4) { // Undefined
+            direction_sanze = direction::UNDEFINED;
             m_maze[snake_head.p_line][snake_head.p_column] = CellType::EMPTY;
-
             path_valid = true;
         }
     }
 
-
-    return teste;
+    return direction_sanze;
 }
 
-void Level::snake_move(direction m_direction, size_t& size_body, size_t& food){
+/**
+ * @brief Moves the snake in the specified direction, updating the game state.
+ * 
+ * This function handles the movement of the snake based on the specified direction.
+ * It updates the snake's head, body, and the game state, taking into account collisions
+ * with food and the snake itself.
+ * 
+ * @param m_direction The direction in which the snake should move.
+ * @param size_body Reference to the size of the snake's body.
+ * @param food Reference to the count of food eaten by the snake.
+ */
+void Level::snake_move(direction m_direction, size_t& size_body, size_t& food) {
 
-    Position temp; 
+    // Temporary marker to store the current position of the snake's head.
+    Position temp;
+
+    // Assigning the current line position of the snake's head to the temporary marker.
     temp.p_line = snake_head.p_line;
+
+    // Assigning the current column position of the snake's head to the temporary marker.
     temp.p_column = snake_head.p_column;
-    snake_tail.push(temp);
+ 
 
+    snake_tail.push(temp);                      
 
-    if(size_body > 1){
+    // Update the maze based on the snake's size and direction
+    if (size_body > 1) {
         m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_BODY;
-    }
-    else if(size_body < 2){
+    } 
+    else if (size_body < 2) {
         m_maze[snake_head.p_line][snake_head.p_column] = CellType::EMPTY;
-        
-        
     }
 
-
-        
-    if(m_direction == direction::FORWARD){
+    // Move the snake's head and check for collisions with food
+    if (m_direction == direction::FORWARD) {
         snake_head.p_line -= 1;
-
-        if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
-            size_body += 1;
-            food += 1;
-        }
-    }         
-    else if(m_direction == direction::BACKWARD){
+    } 
+    else if (m_direction == direction::BACKWARD) {
         snake_head.p_line += 1;
-
-        if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
-            size_body += 1;
-            food += 1;
-        }
-    }
-    else if(m_direction == direction::LEFT){
-
+    } 
+    else if (m_direction == direction::LEFT) {
         snake_head.p_column -= 1;
-
-        if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
-            size_body += 1;
-            food += 1;
-        }
-    }
-    else if(m_direction == direction::RIGHT){
+    } 
+    else if (m_direction == direction::RIGHT) {
         snake_head.p_column += 1;
-
-        if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
-            size_body += 1;
-            food += 1;
-        }
     }
 
+    if (m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD) {
+        size_body += 1;
+        food += 1;
+    }
 
-    if(size_body <= snake_tail.size()){
-        while (size_body <= snake_tail.size()){
+    // Remove the last segment of the snake's tail if its size exceeds the current body size
+    if (size_body <= snake_tail.size()) {
+        while (size_body <= snake_tail.size()) {
             temp = snake_tail.front();
             snake_tail.pop();
             m_maze[temp.p_line][temp.p_column] = CellType::EMPTY;   
         } 
-
     }
 
-    if(m_direction == direction::FORWARD){
+    // Update the maze with the new position of the snake's head based on the direction
+    if (m_direction == direction::FORWARD) {
         m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_FORWARD;
-    }
-    else if(m_direction == direction::BACKWARD){
+    } 
+    else if (m_direction == direction::BACKWARD) {
         m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_BACKWARD;
-    }
-    else if(m_direction == direction::LEFT  ){
+    } 
+    else if (m_direction == direction::LEFT) {
         m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_LEFT;
-    }
-    else if(  m_direction == direction::RIGHT){
+    } 
+    else if (m_direction == direction::RIGHT) {
         m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_RIGHT;
-            
     }
-    
-
 }
 
 
 
 
+//Return spawn position of current level.
 Position Level::ret_spawn_position(){
     return spawn_point;
 }

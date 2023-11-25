@@ -301,177 +301,194 @@ void SnakeGame::read_file(){
 
 
 
-
+/**
+ * @brief Processes game events.
+ * 
+ * This function processes game events, such as user input.
+ */
 void SnakeGame::process_events(){
-    if(m_game_state == game_state::STARTING){
-        std::string nada;
-        //std::cin.ignore();
-        std::getline(std::cin, nada);
+    if(m_game_state == game_state::STARTING || m_game_state == game_state::SNAKE_DIE){
+        std::string empty;
+        std::getline(std::cin, empty);
     }
-    else if(m_game_state == game_state::SNAKE_DIE){
-        std::string nada;
-        //std::cin.ignore();
-        std::getline(std::cin, nada);
-    }
+
 }
 
+
+/**
+ * @brief Updates the game state based on the current game state.
+ * 
+ * This function handles the main game loop, updating the game state and
+ * performing actions based on the current state.
+ */
 void SnakeGame::update(){
+    /// Game initialization
     if(m_game_state == game_state::STARTING){
+        // Set the level to be played and transition to the state of generating new food.
         level = m_levels[num_levels];
         m_game_state = game_state::NEW_FOOD;
     }
 
+    /// Generate a new food at a random location
     else if(m_game_state == game_state::NEW_FOOD){
+        // If the snake has eaten the required amount of food, move to the new level.
         if(foods == ret_food()){
             m_game_state = game_state::NEW_LEVEL;
         }
+        // Generate the position of the new food.
         else{
             level.pos_new_food();
-
             m_game_state = game_state::NEW_PATH;
-
         }
     }
 
+    /// Find the path to be followed
     else if(m_game_state == game_state::NEW_PATH){
-        //encontrar os caminho a ser seguido
-
         path = level.new_path();
+        // Transition to the state of updating the snake's direction.
         m_game_state = game_state::UPDATE_DIRECTION;
     }
 
+    // Update the snake's direction
     else if(m_game_state == game_state::UPDATE_DIRECTION){
+        // Random direction mode
         if(path.empty()){
-            //level.delete_food();
-            //m_game_state = game_state::NEW_LEVEL;
+            // Transition to the state of choosing a random direction.
             m_game_state = game_state::RANDOM_DIRECTION;
         }
         else{
+            // Move the snake in the specified direction and remove it from the path.
             level.snake_move(path.front(), snake_size_body, foods);
             path.pop();
         }
-
-
     }
 
+    // Choose a random direction
     else if(m_game_state == game_state::RANDOM_DIRECTION){
         auto temp = snake_size_body;
         auto aux = level.path_random();
 
+        // If the direction is undefined, the snake dies.
         if(aux == direction::UNDEFINED){
             m_game_state = game_state::SNAKE_DIE;
         }
         else{
+            // Move the snake in the randomly chosen direction.
             level.snake_move(aux, snake_size_body, foods);
         }
 
-
+        // If the body size increased, generate a new food and update the score.
         if(temp < snake_size_body) {
             m_game_state = game_state::NEW_FOOD;
             score += foods * 10;
         }
-
     }
 
+    // If the snake dies, reset the game.
     else if(m_game_state == game_state::SNAKE_DIE){
         level.reset_snake(snake_size_body);
         lives -= 1;
 
+        // If no lives are left, transition to the game over state.
         if(lives == 0){
             m_game_state = game_state::GAME_OVER;
         }
         else{
+            // Delete the food and transition to the state of generating new food.
             level.delete_food();
             m_game_state = game_state::NEW_FOOD;
-            //m_game_state = game_state::RANDOM_DIRECTION;
         }
-
-
     }
-    //colocar snake die no render
 
+    // Start a new level
     else if(m_game_state == game_state::NEW_LEVEL){
         snake_size_body = 1;
-        //muda o level, altera a matriz com os dados.
+        // Change the level and update the matrix with the new data.
 
         num_levels++;
+        // If there are more levels, reset the food count and transition to the starting state.
         if(m_levels.size() > num_levels){
             foods = 0;
             m_game_state = game_state::STARTING;
         }
+        // Otherwise, transition to the finished puzzle state.
         else{
             m_game_state = game_state::FINISHED_PUZZLE;
         }
-
     }
 
+    // Finished puzzle state
     else if(m_game_state == game_state::FINISHED_PUZZLE){
-
+        // Exit the game.
         exit(1);
     }
 
+    // Game over state
     else if(m_game_state == game_state::GAME_OVER){
-        //imprimir mensagem de derrota.
-
+        // Exit the game.
         exit(1);
     }
-
 }
 
+/**
+ * @brief Renders the game state for display.
+ * 
+ * This function handles the rendering of the game state based on the current game state.
+ * It displays relevant information or graphics for each game state.
+ */
 void SnakeGame::render(){
 
+    // Rendering for the STARTING game state
     if(m_game_state == game_state::STARTING){
+        // Display initial game data and the running game.
         data_game();
         level.display_run_game();
 
-        std::cout <<Color::tcolor( "\n>>> Press enter to continue.\n", Color::BRIGHT_WHITE, Color::BOLD);
-
+        // Prompt to press Enter to continue.
+        std::cout << Color::tcolor( "\n>>> Press enter to continue.\n", Color::BRIGHT_WHITE, Color::BOLD);
     }
 
+    // Rendering for the NEW_PATH game state
     else if(m_game_state == game_state::NEW_PATH){
-        //encontrar os caminho a ser seguido
-
+        // Find the path to be followed (rendering logic not specified).
+        // Add rendering logic as needed.
     }
 
+    // Rendering for the UPDATE_DIRECTION game state
     else if(m_game_state == game_state::UPDATE_DIRECTION){
-
-
+        // Uncomment the following lines if rendering logic is to be executed.
         // std::chrono::milliseconds duration{1000 / fps};
         // std::this_thread::sleep_for(duration);
-        
         // data_game();
         // level.display_run_game();
-        
     }
 
+    // Rendering for the RANDOM_DIRECTION game state
     else if(m_game_state == game_state::RANDOM_DIRECTION){
-
+        // Pause for a short duration, then display game data and the running game.
         std::chrono::milliseconds duration{1000 / fps};
         std::this_thread::sleep_for(duration);
-        
         data_game();
         level.display_run_game();
-
-
     }
 
+    // Rendering for the SNAKE_DIE game state
     else if(m_game_state == game_state::SNAKE_DIE){
-        std::cout <<Color::tcolor( "The snake has died, press Enter to continue.\n", Color::BRIGHT_RED, Color::BOLD);
+        // Display a message indicating the snake has died, prompt to press Enter to continue.
+        std::cout << Color::tcolor( "The snake has died, press Enter to continue.\n", Color::BRIGHT_RED, Color::BOLD);
     }
 
-
+    // Rendering for the FINISHED_PUZZLE game state
     else if(m_game_state == game_state::FINISHED_PUZZLE){
+        // Display game data, the running game, and a win message.
         data_game();
         level.display_run_game();
-
         game_win_display();
-
     }
 
+    // Rendering for the GAME_OVER game state
     else if(m_game_state == game_state::GAME_OVER){
-
+        // Display the game over message.
         game_over_display();
-
     }
-
 }
