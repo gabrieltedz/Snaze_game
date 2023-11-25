@@ -66,6 +66,7 @@ public:
     std::queue<direction> path;  //fila com as direções a ser seguida
     Level level;
 
+    short num_levels;
     size_t score;
     size_t snake_size_body;
     size_t foods;
@@ -117,6 +118,15 @@ public:
 
 
     void data_game();
+
+    void game_over_display();
+
+    void game_over2_display();
+
+    void game_win_display();
+
+    void snake_display();
+
 
     /**
      * @brief Takes a string argument indicating the name for the input file and opens it 

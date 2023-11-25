@@ -2,7 +2,8 @@
 
 /**!
  *  This program implements the Snake simulation.
- *  @author Selan R. dos Santos
+ *  @author Gabriel Victor da Silva
+ *  @author Thiago Raquel
  */
 int main(int argc, char* argv[]) {
   // Create object snaze from class SnakeGame

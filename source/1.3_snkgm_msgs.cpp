@@ -18,25 +18,93 @@ void SnakeGame::help_message(){
  * @brief Introduction message at the start of every game indicating authors, copyright, and in-game
  * values given by arguments via CLI
 */
-void SnakeGame::introduction_message(){
+
+
+void SnakeGame::introduction_message() {
+    snake_display();
+    std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+    std::cout << Color::tcolor("       ===> Welcome to the classic Snake Game! <===", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+    std::cout << Color::tcolor("             copyright DIMAp / UFRN 2023", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+    std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+    std::cout <<  Color::tcolor(" Levels loaded: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(m_levels.size()), Color::BRIGHT_WHITE, Color::BOLD);
+    std::cout <<  Color::tcolor(" | Snake lives: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(ret_lives()), Color::BRIGHT_WHITE, Color::BOLD);
+    std::cout <<  Color::tcolor(" | Apples to eat: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(ret_food()), Color::BRIGHT_WHITE, Color::BOLD)  << std::endl;
+    std::cout <<  Color::tcolor(  " Clear all levels to win the game. Good luck!!", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+    std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+    std::cout << Color::tcolor(">>> Press <ENTER> to start the game!", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
     std::cout << std::endl;
-    std::cout << "-----------------------------------------------------------" << std::endl;
-    std::cout << "       ===> Welcome to the classic Snake Game! <===" << std::endl;
-    std::cout << "             copyright DIMAp / UFRN 2023" << std::endl;
-    std::cout << "-----------------------------------------------------------" << std::endl;
-    std::cout << " Levels loaded: " << m_levels.size() << " | Snake lives: " << ret_lives() << " | Apples to eat: " << ret_food() << std::endl;
-    std::cout << " Clear all levels to win the game. Good luck!!" << std::endl;
-    std::cout << "-----------------------------------------------------------" << std::endl;
-    std::cout << ">>> Press <ENTER> to start the game!" << std::endl;
-    std::cout << std::endl;
-    std::cout << "Lives: " << ret_lives() << " | Score: 0       | Food eaten:" << foods<< " out of " << ret_food() << std::endl;
-    std::cout << "-----------------------------------------------------------" << std::endl;
+
+    std::cout << Color::tcolor("Lives: ", Color::BRIGHT_WHITE, Color::BOLD);
+    for (size_t i = 0; i < ret_lives(); i++){std::cout << Color::tcolor("❤️", Color::BRIGHT_RED);}
+
+    std::cout << Color::tcolor(" | Score: ", Color::BRIGHT_WHITE, Color::BOLD)  << Color::tcolor(std::to_string(ret_score()), Color::BRIGHT_WHITE, Color::BOLD);
+    std::cout << Color::tcolor(" | Food eaten: ", Color::BRIGHT_WHITE, Color::BOLD)  << Color::tcolor(std::to_string(foods), Color::BRIGHT_WHITE, Color::BOLD);
+    std::cout << Color::tcolor(" out of ", Color::BRIGHT_WHITE, Color::BOLD)  << Color::tcolor(std::to_string(ret_food()), Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+
+
+    std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
 }
 
+
 void SnakeGame::data_game(){
-    std::cout << "\n\nLives: ";
-    for (size_t i = 0; i < ret_lives(); i++){std::cout << "❤️";}
+    std::cout << Color::tcolor("\n\nLives: ", Color::BRIGHT_WHITE, Color::BOLD);
+    for (size_t i = 0; i < ret_lives(); i++){std::cout << Color::tcolor("❤️", Color::BRIGHT_RED);}
      
-    std::cout << " | Score: " << ret_score() << " | Food eaten: " << foods << " out of " << ret_food() << std::endl;
-    std::cout << "-----------------------------------------------------------" << std::endl;
+
+    std::cout << Color::tcolor(" | Score: ", Color::BRIGHT_WHITE, Color::BOLD)  << Color::tcolor(std::to_string(ret_score()), Color::BRIGHT_WHITE, Color::BOLD);
+    std::cout << Color::tcolor(" | Food eaten: ", Color::BRIGHT_WHITE, Color::BOLD)  << Color::tcolor(std::to_string(foods), Color::BRIGHT_WHITE, Color::BOLD);
+    std::cout << Color::tcolor(" out of ", Color::BRIGHT_WHITE, Color::BOLD)  << Color::tcolor(std::to_string(ret_food()), Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+
+
+    std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
+
 }
+
+
+
+void SnakeGame::game_over_display() {
+    std::cout << std::endl << std::endl;
+    std::cout << Color::tcolor("  ███   ███  █     █ █████     ███  █   █ █████ ████   ", Color::BRIGHT_RED) << std::endl;
+    std::cout << Color::tcolor(" █     █   █ ██   ██ █        █   █ █   █ █     █   █  ", Color::BRIGHT_RED) << std::endl;
+    std::cout << Color::tcolor(" █  ██ █████ █ █ █ █ ████     █   █ █   █ ████  ████   ", Color::BRIGHT_RED) << std::endl;
+    std::cout << Color::tcolor(" █   █ █   █ █  █  █ █        █   █  █ █  █     █  ██  " , Color::BRIGHT_RED) << std::endl;
+    std::cout << Color::tcolor("  ███  █   █ █     █ █████     ███    █   █████ █   ██ ", Color::BRIGHT_RED) << std::endl;
+}
+
+
+void SnakeGame::game_over2_display() {
+    std::cout << std::endl << std::endl;
+    std::cout << Color::tcolor(" █   █  ███  █   █    █      ███   ████ █████ ", Color::BRIGHT_RED) << std::endl;
+    std::cout << Color::tcolor("  █ █  █   █ █   █    █     █   █ █     █     ", Color::BRIGHT_RED) << std::endl;
+    std::cout << Color::tcolor("   █   █   █ █   █    █     █   █  ███  ████  ", Color::BRIGHT_RED) << std::endl;
+    std::cout << Color::tcolor("   █   █   █ █   █    █     █   █     █ █     ", Color::BRIGHT_RED) << std::endl;
+    std::cout << Color::tcolor("   █    ███   ███      ████  ███  ████  █████ ", Color::BRIGHT_RED) << std::endl;
+}
+
+void SnakeGame::game_win_display() {
+    std::cout << std::endl << std::endl;
+    std::cout << Color::tcolor("        █   █  ███  █   █    █ █ █ █  ██  █ ", Color::BRIGHT_GREEN) << std::endl;
+    std::cout << Color::tcolor("         █ █  █   █ █   █    █ █ █    █ █ █ ", Color::BRIGHT_GREEN) << std::endl;
+    std::cout << Color::tcolor("          █   █   █ █   █    █ █ █ █  █ █ █ ", Color::BRIGHT_GREEN) << std::endl;
+    std::cout << Color::tcolor("          █   █   █ █   █    █ █ █ █  █ █ █ ", Color::BRIGHT_GREEN) << std::endl;
+    std::cout << Color::tcolor("          █    ███   ███      ███  █  █ ███ ", Color::BRIGHT_GREEN) << std::endl;
+}
+
+void SnakeGame::snake_display() {
+    std::cout << std::endl << std::endl;
+    std::cout << Color::tcolor("        ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●", Color::BRIGHT_YELLOW) << std::endl;
+    std::cout << Color::tcolor("        ●", Color::BRIGHT_YELLOW) << Color::tcolor("  ████  ██  █   ███   █████  █████  ", Color::BRIGHT_GREEN);
+    std::cout << Color::tcolor("●", Color::BRIGHT_YELLOW) << std::endl;
+    std::cout << Color::tcolor("        ●", Color::BRIGHT_YELLOW) << Color::tcolor(" █      █ █ █  █   █      █  █      ", Color::BRIGHT_GREEN);
+    std::cout << Color::tcolor("●", Color::BRIGHT_YELLOW) << std::endl;
+    std::cout << Color::tcolor("        ●", Color::BRIGHT_YELLOW) << Color::tcolor("  ███   █ █ █  █████   ███   ████   ", Color::BRIGHT_GREEN);
+    std::cout << Color::tcolor("●", Color::BRIGHT_YELLOW) << std::endl;
+    std::cout << Color::tcolor("        ●", Color::BRIGHT_YELLOW) << Color::tcolor("     █  █ █ █  █   █  █      █      ", Color::BRIGHT_GREEN);
+    std::cout << Color::tcolor("●", Color::BRIGHT_YELLOW) << std::endl;
+    std::cout << Color::tcolor("        ●", Color::BRIGHT_YELLOW) << Color::tcolor(" ████   █ ███  █   █  █████  █████  ", Color::BRIGHT_GREEN) << std::endl;
+    std::cout << Color::tcolor("        ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●<", Color::BRIGHT_YELLOW) << std::endl;
+
+    std::cout << std::endl;
+}
+
+

@@ -59,46 +59,46 @@ void Level::read_level_maze(){
     }
 }
 
-void Level::display_maze(){
-    std::cout << "display maze:" << std::endl;
+// void Level::display_maze(){
+//     std::cout << "display maze:" << std::endl;
 
-    CellType type;
-    char current_char;
-    for(int i{0}; i < m_lines; i++){
+//     CellType type;
+//     char current_char;
+//     for(int i{0}; i < m_lines; i++){
 
-        for (int j{0}; j < m_columns; j++){
-            type = m_maze[i][j];
+//         for (int j{0}; j < m_columns; j++){
+//             type = m_maze[i][j];
 
-            switch(type){
-                case (CellType::WALL):
-                current_char = '#';
-                break;
+//             switch(type){
+//                 case (CellType::WALL):
+//                 current_char = '#';
+//                 break;
 
-                case (CellType::INVISIBLE_WALL):
-                current_char = '.';
-                break;
+//                 case (CellType::INVISIBLE_WALL):
+//                 current_char = '.';
+//                 break;
 
-                case (CellType::SPAWN_POINT):
-                current_char = '&';
-                break;
+//                 case (CellType::SPAWN_POINT):
+//                 current_char = '&';
+//                 break;
 
-                case (CellType::EMPTY):
-                current_char = ' ';
-                break;
+//                 case (CellType::EMPTY):
+//                 current_char = ' ';
+//                 break;
             
-                // case(CellType::FOOD):
-                // current_char = ' ';
-                // break;
+//                 // case(CellType::FOOD):
+//                 // current_char = ' ';
+//                 // break;
 
-                // case(CellType::SNAKE_HEAD):
-                // current_char = '^';
-                // break;
-            }
+//                 // case(CellType::SNAKE_HEAD):
+//                 // current_char = '^';
+//                 // break;
+//             }
 
-            std::cout << current_char;
-        } std::cout << std::endl;
-    }
-}
+//             std::cout << current_char;
+//         } std::cout << std::endl;
+//     }
+// }
 
 void Level::display_run_game(){
     
@@ -119,7 +119,7 @@ void Level::display_run_game(){
                 break;
 
                 case (CellType::SPAWN_POINT):
-                std::cout << ">";
+                std::cout << Color::tcolor("<", Color::BRIGHT_YELLOW);
                 break;
 
                 case (CellType::EMPTY):
@@ -131,23 +131,23 @@ void Level::display_run_game(){
                 break;
 
                 case(CellType::SNAKE_HEAD_FORWARD):
-                std::cout << "y";
+                std::cout << Color::tcolor("v", Color::BRIGHT_YELLOW);
                 break;
 
                 case(CellType::SNAKE_HEAD_BACKWARD):
-                std::cout << 'v';
+                std::cout << Color::tcolor("ʌ", Color::BRIGHT_YELLOW);
                 break;
 
                 case(CellType::SNAKE_HEAD_LEFT):
-                std::cout << '<';
+                std::cout << Color::tcolor(">", Color::BRIGHT_YELLOW);
                 break;
 
                 case(CellType::SNAKE_HEAD_RIGHT):
-                std::cout << '>';
+                std::cout << Color::tcolor("<", Color::BRIGHT_YELLOW);
                 break;
 
                 case(CellType::SNAKE_BODY):
-                std::cout << "●";
+                std::cout << Color::tcolor("●", Color::BRIGHT_YELLOW);
                 break;
             }
 
@@ -155,6 +155,11 @@ void Level::display_run_game(){
         } std::cout << std::endl;
     }
 }
+
+void Level::delete_food(){
+    m_maze[m_pos_food.p_line][m_pos_food.p_column] = CellType::EMPTY;
+}
+
 
 void Level::pos_new_food(){
 
@@ -175,8 +180,22 @@ void Level::pos_new_food(){
     }
 }
 
-void Level::delete_food(){
-   // m_maze[m_pos_food.p_line][m_pos_food.p_column] = CellType::EMPTY;
+void Level::reset_snake(size_t& size_body){
+
+
+    while (!snake_tail.empty()){
+        auto temp = snake_tail.front();
+        snake_tail.pop();
+        m_maze[temp.p_line][temp.p_column] = CellType::EMPTY;   
+    } 
+
+    snake_head.p_column = spawn_point.p_column;
+    snake_head.p_line = spawn_point.p_line;
+    size_body = 1;
+
+    m_maze[ snake_head.p_column][snake_head.p_line] = CellType::SPAWN_POINT;  
+
+
 }
 
 std::queue<direction> Level::new_path(){
@@ -204,23 +223,22 @@ direction Level::path_random(){
         int colunm = snake_head.p_column;
         int line = snake_head.p_line;
 
-
+        
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> distribution(0, 3);
         random = distribution(gen);
 
-        std::cout << "Trying random direction: " << random << std::endl;
         if ((m_maze[line-1][colunm] == CellType::WALL || m_maze[line-1][colunm] == CellType::SNAKE_BODY)){
             if(m_maze[line+1][colunm] == CellType::WALL || m_maze[line+1][colunm] == CellType::SNAKE_BODY){
                 if(m_maze[line][colunm-1] == CellType::WALL || m_maze[line][colunm-1] == CellType::SNAKE_BODY){
                     if(m_maze[line][colunm+1] == CellType::WALL || m_maze[line][colunm+1] == CellType::SNAKE_BODY){
-                        return direction::UNDEFINED;
+                        random = 4;
                     }
                 }
             }
         }
-        
+
 
         //forward
         if (random == 0){
@@ -259,27 +277,31 @@ direction Level::path_random(){
             colunm += 1;
 
             if (m_maze[line][colunm] == CellType::EMPTY || m_maze[line][colunm] == CellType::FOOD){
-                if(m_maze[line][colunm] == CellType::FOOD){
-                }
                 teste = direction::RIGHT;
 
                 path_valid = true;
             }
         }
         
+        else if(random == 4){
+            teste = direction::UNDEFINED;
+            m_maze[snake_head.p_line][snake_head.p_column] = CellType::EMPTY;
+
+            path_valid = true;
+        }
     }
+
 
     return teste;
 }
 
-bool Level::snake_move(direction m_direction, size_t& size_body, size_t& food){
+void Level::snake_move(direction m_direction, size_t& size_body, size_t& food){
 
     Position temp; 
     temp.p_line = snake_head.p_line;
     temp.p_column = snake_head.p_column;
     snake_tail.push(temp);
 
-    bool verify = true;
 
     if(size_body > 1){
         m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_BODY;
@@ -290,88 +312,66 @@ bool Level::snake_move(direction m_direction, size_t& size_body, size_t& food){
         
     }
 
-    std::cout << "\n-----------------------------------------------------------";
+
+        
     if(m_direction == direction::FORWARD){
-        std::cout << "\ncima";
+        snake_head.p_line -= 1;
+
+        if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
+            size_body += 1;
+            food += 1;
+        }
     }         
     else if(m_direction == direction::BACKWARD){
-            std::cout << "\nbaixo";
-    }
+        snake_head.p_line += 1;
 
+        if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
+            size_body += 1;
+            food += 1;
+        }
+    }
     else if(m_direction == direction::LEFT){
-        std::cout << "\nesquerda";
+
+        snake_head.p_column -= 1;
+
+        if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
+            size_body += 1;
+            food += 1;
+        }
     }
     else if(m_direction == direction::RIGHT){
-        std::cout << "\ndireita";
+        snake_head.p_column += 1;
 
+        if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
+            size_body += 1;
+            food += 1;
+        }
     }
-    else{
-        std::cout << "\nerrrrrrrrro";
-        verify = false;
-    }
-        std::cout << " verificando";
-    if(verify == true){
-
-        std::cout << " passou";
-            
-        if(m_direction == direction::FORWARD){
-            snake_head.p_line -= 1;
-
-            if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
-                size_body += 1;
-                food += 1;
-            }
-        }         
-        else if(m_direction == direction::BACKWARD){
-            snake_head.p_line += 1;
-
-            if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
-                size_body += 1;
-                food += 1;
-            }
-        }
-        else if(m_direction == direction::LEFT){
-
-            snake_head.p_column -= 1;
-
-            if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
-                size_body += 1;
-                food += 1;
-            }
-        }
-        else if(m_direction == direction::RIGHT){
-            snake_head.p_column += 1;
-
-            if(m_maze[snake_head.p_line][snake_head.p_column] == CellType::FOOD){
-                size_body += 1;
-                food += 1;
-            }
-        }
 
 
-        if(size_body <= snake_tail.size()){
+    if(size_body <= snake_tail.size()){
+        while (size_body <= snake_tail.size()){
             temp = snake_tail.front();
             snake_tail.pop();
-
             m_maze[temp.p_line][temp.p_column] = CellType::EMPTY;   
-        }
+        } 
 
-        if(m_direction == direction::FORWARD){
-            m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_FORWARD;
-        }
-        else if(m_direction == direction::BACKWARD){
-            m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_BACKWARD;
-        }
-        else if(m_direction == direction::LEFT  ){
-            m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_LEFT;
-        }
-        else if(  m_direction == direction::RIGHT){
-            m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_RIGHT;
-                
-        }
     }
- std::cout << "loop";
-    return verify;
+
+    if(m_direction == direction::FORWARD){
+        m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_FORWARD;
+    }
+    else if(m_direction == direction::BACKWARD){
+        m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_BACKWARD;
+    }
+    else if(m_direction == direction::LEFT  ){
+        m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_LEFT;
+    }
+    else if(  m_direction == direction::RIGHT){
+        m_maze[snake_head.p_line][snake_head.p_column] = CellType::SNAKE_HEAD_RIGHT;
+            
+    }
+    
 
 }
 

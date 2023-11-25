@@ -93,7 +93,9 @@ public:
 
     void delete_food();
 
-    bool snake_move(direction m_direction, size_t& size_body, size_t& food);
+    void snake_move(direction m_direction, size_t& size_body, size_t& food);
+
+    void reset_snake(size_t& size_body);
 
     direction path_random();
 

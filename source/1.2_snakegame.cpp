@@ -3,9 +3,10 @@
 
 //construtor
 SnakeGame::SnakeGame(){
-    food = 5;
-    lives = 10;
+    food = 2;
+    lives = 3;
     fps = 4;
+    num_levels = 0;
 
     score = 0;
     snake_size_body = 1;
@@ -201,6 +202,7 @@ void SnakeGame::read_file(){
 
     // Read the lines and columns of levels in the file
     while(inputfile >> lines >> columns){
+        Level level1;
   
         // validation auxiliation values
         is_valid = false;
@@ -253,26 +255,28 @@ void SnakeGame::read_file(){
         // If valid
         if (is_valid == true){
             // Initialize level with lines, columns and original char matrix
-            level.m_lines = lines;
-            level.m_columns = columns;
-            level.m_map = matrix;
+            level1.m_lines = lines;
+            level1.m_columns = columns;
+            level1.m_map = matrix;
 
             // Create CellType matrix
-            level.read_level_maze();
+            level1.read_level_maze();
 
             // Add valid level to m_levels
-            m_levels.push_back(level);
+            std::cout << "\n novo level \n";
+            m_levels.push_back(level1);
 
-            std::cout << "Posição spawn, line: " << level.ret_spawn_position().p_line << ", column: " << level.ret_spawn_position().p_column << std::endl;
+            std::cout << "Posição spawn, line: " << level1.ret_spawn_position().p_line << ", column: " << level1.ret_spawn_position().p_column << std::endl;
 
             // Original char matrix
             std::cout << "completo char: " << std::endl;
-            level.display();
+            level1.display();
 
             // Celltype matrix
             std::cout << "completo cell_type: " << std::endl;
-            level.display_maze();
-        } else if (invalid == true){
+            //level.display_maze();
+        } 
+        else if (invalid == true){
             // Ignore level
         }
 
@@ -289,8 +293,8 @@ void SnakeGame::read_file(){
                 std::cout << i << " str: " << str;
                 std::cout << " not ok";
             }*/
+
     }
-    
     inputfile.close();
 
 }
@@ -299,14 +303,21 @@ void SnakeGame::read_file(){
 
 
 void SnakeGame::process_events(){
-
+    if(m_game_state == game_state::STARTING){
+        std::string nada;
+        //std::cin.ignore();
+        std::getline(std::cin, nada);
+    }
+    else if(m_game_state == game_state::SNAKE_DIE){
+        std::string nada;
+        //std::cin.ignore();
+        std::getline(std::cin, nada);
+    }
 }
 
 void SnakeGame::update(){
     if(m_game_state == game_state::STARTING){
-        //std::string nada;
-        std::cin.ignore();
-        //std::getline(std::cin, nada);
+        level = m_levels[num_levels];
         m_game_state = game_state::NEW_FOOD;
     }
 
@@ -351,36 +362,51 @@ void SnakeGame::update(){
             m_game_state = game_state::SNAKE_DIE;
         }
         else{
-            bool verify = level.snake_move(aux, snake_size_body, foods);
+            level.snake_move(aux, snake_size_body, foods);
         }
 
 
         if(temp < snake_size_body) {
-            foods = snake_size_body - 1;
             m_game_state = game_state::NEW_FOOD;
+            score += foods * 10;
         }
 
     }
 
     else if(m_game_state == game_state::SNAKE_DIE){
-        level.snake_head.p_column = level.spawn_point.p_column;
-        level.snake_head.p_line = level.spawn_point.p_line;
+        level.reset_snake(snake_size_body);
         lives -= 1;
-        snake_size_body = 1;
+
+        if(lives == 0){
+            m_game_state = game_state::GAME_OVER;
+        }
+        else{
+            level.delete_food();
+            m_game_state = game_state::NEW_FOOD;
+            //m_game_state = game_state::RANDOM_DIRECTION;
+        }
+
+
     }
+    //colocar snake die no render
 
     else if(m_game_state == game_state::NEW_LEVEL){
         snake_size_body = 1;
         //muda o level, altera a matriz com os dados.
 
-        //level.delete_food();
-        m_game_state = game_state::FINISHED_PUZZLE;
+        num_levels++;
+        if(m_levels.size() > num_levels){
+            foods = 0;
+            m_game_state = game_state::STARTING;
+        }
+        else{
+            m_game_state = game_state::FINISHED_PUZZLE;
+        }
 
     }
 
     else if(m_game_state == game_state::FINISHED_PUZZLE){
-        //emprimir mensagem de vitoria.
-        //finalizar o game.
+
         exit(1);
     }
 
@@ -394,7 +420,15 @@ void SnakeGame::update(){
 
 void SnakeGame::render(){
 
-    if(m_game_state == game_state::NEW_PATH){
+    if(m_game_state == game_state::STARTING){
+        data_game();
+        level.display_run_game();
+
+        std::cout <<Color::tcolor( "\n>>> Press enter to continue.\n", Color::BRIGHT_WHITE, Color::BOLD);
+
+    }
+
+    else if(m_game_state == game_state::NEW_PATH){
         //encontrar os caminho a ser seguido
 
     }
@@ -402,11 +436,11 @@ void SnakeGame::render(){
     else if(m_game_state == game_state::UPDATE_DIRECTION){
 
 
-        std::chrono::milliseconds duration{1000 / fps};
-        std::this_thread::sleep_for(duration);
+        // std::chrono::milliseconds duration{1000 / fps};
+        // std::this_thread::sleep_for(duration);
         
-        data_game();
-        level.display_run_game();
+        // data_game();
+        // level.display_run_game();
         
     }
 
@@ -421,15 +455,22 @@ void SnakeGame::render(){
 
     }
 
+    else if(m_game_state == game_state::SNAKE_DIE){
+        std::cout <<Color::tcolor( "The snake has died, press Enter to continue.\n", Color::BRIGHT_RED, Color::BOLD);
+    }
+
 
     else if(m_game_state == game_state::FINISHED_PUZZLE){
-        //emprimir mensagem de vitoria.
-        //finalizar o game.
+        data_game();
+        level.display_run_game();
+
+        game_win_display();
 
     }
 
     else if(m_game_state == game_state::GAME_OVER){
-        //imprimir mensagem de derrota.
+
+        game_over_display();
 
     }
 
