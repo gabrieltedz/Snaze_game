@@ -8,7 +8,7 @@ SnakeGame::SnakeGame(){
     fps = 4;
 
     score = 0;
-    snake_size_body = 2;
+    snake_size_body = 1;
 
     game_over = false;
     m_game_state = game_state::STARTING;

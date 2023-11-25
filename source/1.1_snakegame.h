@@ -113,7 +113,7 @@ public:
     */
     void introduction_message();
 
-
+    // Information above the maze
     void data_game();
 
     /**

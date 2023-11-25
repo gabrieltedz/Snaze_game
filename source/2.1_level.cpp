@@ -179,16 +179,176 @@ void Level::delete_food(){
     m_maze[m_pos_food.p_line][m_pos_food.p_column] = CellType::EMPTY;
 }
 
+/**
+ * @brief Try to find the smallest path to the food
+ * When this function is called there is already a food in the maze
+*/
 std::queue<direction> Level::new_path(){
+    // Path that will be taken
     std::queue<direction> teste;
-    teste.push(direction::LEFT);
-    teste.push(direction::BACKWARD);
-    teste.push(direction::RIGHT);
+
+    // Auxiliary char matrix to help the algorithm
+    std::vector<std::vector<char>> matrix_char;
+
+    // Auxiliary value position matrix to help the algorithm
+    std::vector<std::vector<int>> matrix_value;
+
+    CellType type;
+    char character;
+    Position food; // Position of current food
+    Position head_of_snake; // Position of current head of snake
+
+    // Resizing matrix_char
+    matrix_char.resize(m_lines);
+
+    // Resizing matrix_value
+    matrix_value.resize(m_lines);
+    for(int i{0}; i < m_lines; i++){
+        matrix_char[i].resize(m_columns);
+        matrix_value[i].resize(m_columns);
+    }
+
+    // Initialize all value of matrix_value as -1;
+    for(int i{0}; i < m_lines; i++){
+        for (int j{0}; j < m_columns; j++){
+            matrix_value[i][j] = -3;
+        }
+    }
+    
+    // Converter matriz enum em matriz de char
+    for(int i{0}; i < m_lines; i++){
+        for (int j{0}; j < m_columns; j++){
+            type = m_maze[i][j];
+            switch (type)
+            {
+            case (CellType::WALL):
+                character = '#';
+                break;
+            
+            case (CellType::EMPTY):
+                character = ' ';
+                break;
+
+            case (CellType::FOOD):
+                character = 'f';
+                // Store food position
+                food.p_line = i;
+                food.p_column = j;
+                food.value = 1000;
+                matrix_value[i][j] = 1000;
+                break;
+
+            case (CellType::INVISIBLE_WALL):
+                character = '.';
+                break;
+            case (CellType::SNAKE_HEAD_BACKWARD):
+                character = '1';
+
+                // store head position
+                head_of_snake.p_line = i;
+                head_of_snake.p_column = j;
+                head_of_snake.value = 0;
+                matrix_value[i][j] = 0;
+                break;
+
+            case (CellType::SNAKE_HEAD_FORWARD):
+                character = '2';
+                head_of_snake.p_line = i;
+                head_of_snake.p_column = j;
+                head_of_snake.value = 0;
+                matrix_value[i][j] = 0;
+                break;
+
+            case (CellType::SNAKE_HEAD_LEFT):
+                character = '3';
+                head_of_snake.p_line = i;
+                head_of_snake.p_column = j;
+                matrix_value[i][j] = 0;
+                head_of_snake.value = 0;
+                break;
+
+            case (CellType::SNAKE_HEAD_RIGHT):
+                character = '4';
+                head_of_snake.p_line = i;
+                head_of_snake.p_column = j;
+                head_of_snake.value = 0;
+                matrix_value[i][j] = 0;
+                break;
+            
+            case (CellType::SPAWN_POINT):
+                character = '&';
+                head_of_snake.p_line = i;
+                head_of_snake.p_column = j;
+                head_of_snake.value = 0;
+                matrix_value[i][j] = 0;
+                break;
+            }
+            matrix_char[i][j] = character;
+        }
+    }
+
+    // teste output
+    std::cout << "Linha cabeça: " << head_of_snake.p_line << " Coluna cabeça: "<< head_of_snake.p_column << " Valor cabeça: " << head_of_snake.value<< std::endl;
+    std::cout << "Linha comida: " << food.p_line << " Coluna comida: "<< food.p_column << " Valor comida: " << food.value << std::endl;
+    for(int i{0}; i < m_lines;i++){
+        for (int j{0}; j < m_columns; j++){
+            std::cout << matrix_char[i][j];
+        } std::cout << std::endl;
+    }
     teste.push(direction::FORWARD);
-    teste.push(direction::LEFT);
-    teste.push(direction::BACKWARD);
-    teste.push(direction::RIGHT);
-    teste.push(direction::FORWARD);
+
+    // Até aqui sai a matriz de char normal que aparece no terminal
+
+    std::queue<Position> my_queue;
+    
+    std::cout << "while loop: (aperte enter para continuar)" << std::endl;
+    std::cin.ignore();
+
+
+    const int dx[] = {0, 1, 0, -1};
+    const int dy[] = {1, 0, -1, 0};
+
+    for (int k = 0; k < 4; ++k) {
+        int newX = food.p_line + dx[k];
+        int newY = food.p_column + dy[k];
+
+        if (isValid(newX, newY, m_lines, m_columns) && matrix_char[newX][newY] == ' ') {
+            matrix_char[newX][newY] = '*';
+            Position aux{newX, newY};
+            aux.value = matrix_value[food.p_line][food.p_column] - 1;
+            matrix_value[newX][newY] = aux.value;
+            my_queue.push(aux);
+        }
+    }
+
+    while (!my_queue.empty()) {
+        Position current = my_queue.front();
+        my_queue.pop();
+
+        for (int k = 0; k < 4; ++k) {
+            int newX = current.p_line + dx[k];
+            int newY = current.p_column + dy[k];
+
+            if (isValid(newX, newY, m_lines, m_columns) && matrix_char[newX][newY] == ' ') {
+                matrix_char[newX][newY] = '*';
+                Position aux{newX, newY};
+                if (current.value != -3) {
+                    aux.value = matrix_value[current.p_line][current.p_column] - 1;
+                    matrix_value[newX][newY] = aux.value;
+                }
+                my_queue.push(aux);
+            }
+        }
+
+    }
+
+    std::cout << "saiu do while loop " << std::endl;
+
+    for(int i{0}; i < m_lines;i++){
+        for (int j{0}; j < m_columns; j++){
+            std::cout << matrix_value[i][j] << " ";
+        } std::cout << std::endl;
+    }
 
     return teste;
 }
@@ -265,6 +425,7 @@ direction Level::path_random(size_t& size_body){
 
     return teste;
 }
+
 
 void Level::snake_move(direction m_direction, size_t& size_body){
 
@@ -363,7 +524,9 @@ void Level::snake_move(direction m_direction, size_t& size_body){
 }
 
 
-
+bool Level::isValid(int x, int y, int rows, int cols) {
+    return (x >= 0 && x < rows && y >= 0 && y < cols);
+}
 
 Position Level::ret_spawn_position(){
     return spawn_point;
