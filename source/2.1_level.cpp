@@ -295,7 +295,7 @@ std::queue<direction> Level::new_path(){
             std::cout << matrix_char[i][j];
         } std::cout << std::endl;
     }
-    teste.push(direction::FORWARD);
+    //teste.push(direction::FORWARD);
 
     // Até aqui sai a matriz de char normal que aparece no terminal
 
@@ -339,7 +339,6 @@ std::queue<direction> Level::new_path(){
                 my_queue.push(aux);
             }
         }
-
     }
 
     std::cout << "saiu do while loop " << std::endl;
@@ -348,6 +347,73 @@ std::queue<direction> Level::new_path(){
         for (int j{0}; j < m_columns; j++){
             std::cout << matrix_value[i][j] << " ";
         } std::cout << std::endl;
+    }
+
+    
+    Position current = head_of_snake; // Starting point
+    short closest_higher{0};
+    short closest_direction{-3};
+    Position closest_position;
+    // Advance one block
+    for(int k = 0; k < 4; k++){
+        int newX = current.p_line + dx[k];
+        int newY = current.p_column + dy[k];
+        if (isValid(newX, newY, m_lines, m_columns) && matrix_value[newX][newY] > 0) {
+            if (closest_higher < matrix_value[newX][newY]){
+                closest_higher = matrix_value[newX][newY];
+                closest_direction = k;
+                closest_position.p_line = newX;
+                closest_position.p_column = newY;
+            }
+        }    
+    }
+    current = closest_position;
+    current.value = closest_higher;
+
+    switch (closest_direction) {
+        case 0:
+            teste.push(direction::RIGHT);
+            break;
+        case 1:
+            teste.push(direction::BACKWARD);
+            break;
+        case 2:
+            teste.push(direction::LEFT);
+            break;
+        case 3:
+            teste.push(direction::FORWARD);
+            break;
+        default:
+            std::cout << "Deu erro, acho que a cobra não tem path para seguir" << std::endl;
+            break;
+    }
+
+    // Follow the path from the snake's current position to the food
+    while (matrix_value[current.p_line][current.p_column] != 1000) {
+        for (int k = 0; k < 4; ++k) {
+            int newX = current.p_line + dx[k];
+            int newY = current.p_column + dy[k];
+            if (isValid(newX, newY, m_lines, m_columns) && matrix_value[newX][newY] == (current.value + 1)) {
+                switch (k) {
+                    case 0:
+                        teste.push(direction::RIGHT);
+                        break;
+                    case 1:
+                        teste.push(direction::BACKWARD);
+                        break;
+                    case 2:
+                        teste.push(direction::LEFT);
+                        break;
+                    case 3:
+                        teste.push(direction::FORWARD);
+                        break;
+                }
+                current.p_line = newX;
+                current.p_column = newY;
+                current.value = matrix_value[newX][newY];
+                break;  // Move to the next step in the path
+            }
+        }
     }
 
     return teste;
