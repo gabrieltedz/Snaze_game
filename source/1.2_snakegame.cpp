@@ -3,7 +3,7 @@
 
 //construtor
 SnakeGame::SnakeGame(){
-    food = 2;
+    food = 25;
     lives = 3;
     fps = 4;
     num_levels = 0;
