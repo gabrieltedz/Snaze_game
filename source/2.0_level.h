@@ -16,6 +16,7 @@
 struct Position {
     int p_line;
     int p_column;
+    int value{-3}; // If value == -3, it means the value of that position was untouched
     Position(int l = 0, int c = 0) : p_line(l), p_column(c) {}
 };
 
@@ -133,6 +134,7 @@ public:
      * @return A randomly generated direction.
      */
     direction path_random();
+    bool isValid(int x, int y, int rows, int cols);
 
     /**
      * @brief Generates a queue of instructions for the snake to follow aiming for the food.
