@@ -275,6 +275,11 @@ std::queue<direction> Level::new_path(){
                 head_of_snake.value = 0;
                 matrix_value[i][j] = 0;
                 break;
+
+            case (CellType::SNAKE_BODY):
+                character = '=';
+                matrix_value[i][j] = -3;
+                break;
             }
             matrix_char[i][j] = character;
         }
@@ -294,7 +299,7 @@ std::queue<direction> Level::new_path(){
     std::queue<Position> my_queue;
     
     std::cout << "while loop: (aperte enter para continuar)" << std::endl;
-    std::cin.ignore();
+    //std::cin.ignore();
 
 
     const int dx[] = {0, 1, 0, -1};
@@ -407,6 +412,8 @@ std::queue<direction> Level::new_path(){
             }
         }
     }
+
+
 
     return path;
 }

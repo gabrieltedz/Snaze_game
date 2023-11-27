@@ -3,7 +3,7 @@
 
 //construtor
 SnakeGame::SnakeGame(){
-    food = 2;
+    food = 10;
     lives = 3;
     fps = 4;
     num_levels = 0;
@@ -280,23 +280,8 @@ void SnakeGame::read_file(){
             // Ignore level
         }
 
-        // Read characters (columns * lines) times
-        /*for (unsigned short i = 0; i < lines; i++) {
-            getline(inputfile, str);
-
-            
-            // test to see if number of columns is right
-
-            /*if (str.size() == columns) {
-                std::cout << "ok";
-            } else {
-                std::cout << i << " str: " << str;
-                std::cout << " not ok";
-            }*/
-
     }
     inputfile.close();
-
 }
 
 
@@ -353,13 +338,18 @@ void SnakeGame::update(){
     else if(m_game_state == game_state::UPDATE_DIRECTION){
         // Random direction mode
         if(path.empty()){
+
+            // Continuar aqui, thiago
+
             // Transition to the state of choosing a random direction.
-            m_game_state = game_state::RANDOM_DIRECTION;
+            //m_game_state = game_state::RANDOM_DIRECTION;
+            m_game_state = game_state::NEW_FOOD;
         }
         else{
             // Move the snake in the specified direction and remove it from the path.
             level.snake_move(path.front(), snake_size_body, foods);
             path.pop();
+            
         }
     }
 
@@ -457,10 +447,10 @@ void SnakeGame::render(){
     // Rendering for the UPDATE_DIRECTION game state
     else if(m_game_state == game_state::UPDATE_DIRECTION){
         // Uncomment the following lines if rendering logic is to be executed.
-        // std::chrono::milliseconds duration{1000 / fps};
-        // std::this_thread::sleep_for(duration);
-        // data_game();
-        // level.display_run_game();
+        std::chrono::milliseconds duration{1000 / fps};
+        std::this_thread::sleep_for(duration);
+        data_game();
+        level.display_run_game();
     }
 
     // Rendering for the RANDOM_DIRECTION game state
