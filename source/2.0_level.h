@@ -51,6 +51,7 @@ private:
 public:
 
     std::vector<std::vector<char>> m_map;   //!< matrix of char that will be displayed.
+    std::vector<std::vector<bool>> save_map;
     Position spawn_point;                   //!< Position of the snake's spawn point.
     Position m_pos_food;                    //!< Current position of the food.
     Position snake_head;                    //!< Current position of the snake's head.

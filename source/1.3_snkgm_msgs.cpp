@@ -3,16 +3,17 @@
 /**
  * @brief Help message
 */
-void SnakeGame::help_message(){
-    std::cout << "$ ./build/snaze " << std::endl;
+void SnakeGame::help_message() {
+    std::cout << "Usage: ./build/snaze" << std::endl;
     std::cout << "Usage: snaze [<options>] <input_level_file>" << std::endl;
     std::cout << "      Game simulation options:" << std::endl;
     std::cout << "          --help              Print this help text." << std::endl;
-    std::cout << "          --fps <num>         Number of frames (board) presented per second. Default = 4" << std::endl;
-    std::cout << "          --lives <num>       Number of iles the snake shall have. Default = 5." << std::endl;
-    std::cout << "          --food <num>        Number of food pellets for the entire simulation. Default = 10." << std::endl;
-    std::cout << "          --playertype <type> Type of snake intelligence: random, backtracking. Default = backtracking" << std::endl;
+    std::cout << "          --fps <num>         Number of frames (boards) presented per second. Default = 4, and the maximum FPS is 100." << std::endl;
+    std::cout << "          --lives <num>       Number of lives the snake shall have. Default = 5, and the maximum lives = 20." << std::endl;
+    std::cout << "          --food <num>        Number of food pellets for the entire simulation. Default = 10, and the maximum number of foods = 50." << std::endl;
+    std::cout << "          --playertype <type> Type of snake intelligence: random, backtracking. Default = backtracking." << std::endl;
 }
+
 
 /** 
  * @brief Introduction message at the start of every game indicating authors, copyright, and in-game

@@ -24,6 +24,7 @@ void Level::read_level_maze(){
 
     // Resize m_maze
     m_maze.resize(m_lines, std::vector<CellType>(m_columns, CellType::EMPTY));
+    save_map.resize(m_lines, std::vector<bool>(m_columns, false));
 
     for(int i{0}; i < m_lines; i++){
         for (int j{0}; j < m_columns; j++){
@@ -87,7 +88,7 @@ void Level::display_run_game(){
                 break;
             
                 case(CellType::FOOD):
-                std::cout << "x";
+                std::cout << "x"; 
                 break;
 
                 case(CellType::SNAKE_HEAD_FORWARD):
@@ -95,6 +96,7 @@ void Level::display_run_game(){
                 break;
 
                 case(CellType::SNAKE_HEAD_BACKWARD):
+
                 std::cout << Color::tcolor("ʌ", Color::BRIGHT_YELLOW);
                 break;
 
@@ -204,6 +206,8 @@ direction Level::path_random() {
     // Flag indicating the validity of the generated path.
     bool path_valid{false};
 
+    int teste = 0;
+
 
     // Continue generating a random direction until a valid path is found
     while (!path_valid) {
@@ -254,7 +258,21 @@ direction Level::path_random() {
             m_maze[snake_head.p_line][snake_head.p_column] = CellType::EMPTY;
             path_valid = true;
         }
+
+        if(save_map[line][column] == true){
+            teste++;
+            std::cout << " caminho percorrido ";
+            path_valid = false;
+        }
+        else if(teste == 3){
+            save_map[line][column] = false;
+        }
+        else{
+            save_map[line][column] = true;
+        }
+
     }
+
 
     return direction_sanze;
 }

@@ -1,4 +1,4 @@
-# Install script for directory: /home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source
+# Install script for directory: /home/gabrieltedz/snaze/trabalho-06-snaze-thiago_with_gabriel/source
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/gabriel-v/snaze/trabalho-06-snaze-thiago_with_gabriel/source/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/gabrieltedz/snaze/trabalho-06-snaze-thiago_with_gabriel/source/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
