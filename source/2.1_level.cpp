@@ -168,7 +168,7 @@ void Level::reset_snake(size_t& size_body){
     snake_head.p_line = spawn_point.p_line;
     size_body = 1;
 
-    m_maze[ snake_head.p_column][snake_head.p_line] = CellType::SPAWN_POINT;  
+    //m_maze[ snake_head.p_column][snake_head.p_line] = CellType::SPAWN_POINT;  
 
 
 }
@@ -287,13 +287,13 @@ std::queue<direction> Level::new_path(){
     }
 
     // teste output
-    std::cout << "Linha cabeça: " << head_of_snake.p_line << " Coluna cabeça: "<< head_of_snake.p_column << " Valor cabeça: " << head_of_snake.value<< std::endl;
-    std::cout << "Linha comida: " << food.p_line << " Coluna comida: "<< food.p_column << " Valor comida: " << food.value << std::endl;
-    for(int i{0}; i < m_lines;i++){
-        for (int j{0}; j < m_columns; j++){
-            std::cout << matrix_char[i][j];
-        } std::cout << std::endl;
-    }
+    // std::cout << "Linha cabeça: " << head_of_snake.p_line << " Coluna cabeça: "<< head_of_snake.p_column << " Valor cabeça: " << head_of_snake.value<< std::endl;
+    // std::cout << "Linha comida: " << food.p_line << " Coluna comida: "<< food.p_column << " Valor comida: " << food.value << std::endl;
+    // for(int i{0}; i < m_lines;i++){
+    //     for (int j{0}; j < m_columns; j++){
+    //         std::cout << matrix_char[i][j];
+    //     } std::cout << std::endl;
+    // }
 
     // Até aqui sai a matriz de char normal que aparece no terminal
 
@@ -339,13 +339,13 @@ std::queue<direction> Level::new_path(){
         }
     }
 
-    std::cout << "saiu do while loop " << std::endl;
+    // std::cout << "saiu do while loop " << std::endl;
 
-    for(int i{0}; i < m_lines;i++){
-        for (int j{0}; j < m_columns; j++){
-            std::cout << matrix_value[i][j] << " ";
-        } std::cout << std::endl;
-    }
+    // for(int i{0}; i < m_lines;i++){
+    //     for (int j{0}; j < m_columns; j++){
+    //         std::cout << matrix_value[i][j] << " ";
+    //     } std::cout << std::endl;
+    // }
 
     
     Position current = head_of_snake; // Starting point
@@ -368,6 +368,8 @@ std::queue<direction> Level::new_path(){
     current = closest_position;
     current.value = closest_higher;
 
+    bool no_path{false};
+
     switch (closest_direction) {
         case 0:
             path.push(direction::RIGHT);
@@ -382,7 +384,11 @@ std::queue<direction> Level::new_path(){
             path.push(direction::FORWARD);
             break;
         default:
-            std::cout << "Deu erro, acho que a cobra não tem path para seguir" << std::endl;
+            //std::cout << "Deu erro, acho que a cobra não tem path para seguir" << std::endl;
+            while (!(path.empty())){
+                path.pop();
+            }
+            return path;
             break;
     }
 
@@ -466,7 +472,7 @@ direction Level::path_random() {
             peso_l = true;
             teste++;
         }
-        if(teste == 4){
+        if(teste == 3){
             peso_b = peso_f = peso_l = peso_r = true;
             teste = 0;
         }
@@ -520,16 +526,16 @@ direction Level::path_random() {
             path_valid = true;
         }
 
-        if(direction_prev == direction::BACKWARD and direction_snaze == direction::FORWARD and teste <= 4){
+        if(direction_prev == direction::BACKWARD and direction_snaze == direction::FORWARD and teste <= 3){
             path_valid = false;
         }
-        else if(direction_prev == direction::FORWARD and direction_snaze == direction::BACKWARD and teste <= 4){
+        else if(direction_prev == direction::FORWARD and direction_snaze == direction::BACKWARD and teste <= 3){
             path_valid = false;
         }
-        else if(direction_prev == direction::RIGHT and direction_snaze == direction::LEFT and teste <= 4){
+        else if(direction_prev == direction::RIGHT and direction_snaze == direction::LEFT and teste <= 3){
             path_valid = false;
         }
-        else if(direction_prev == direction::LEFT and direction_snaze == direction::RIGHT and teste <= 4){
+        else if(direction_prev == direction::LEFT and direction_snaze == direction::RIGHT and teste <= 3){
             path_valid = false;
         }
 

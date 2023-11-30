@@ -4,7 +4,7 @@
 //construtor
 SnakeGame::SnakeGame(){
 
-    food = 25;
+    food = 10;
     lives = 3;
     fps = 4;
     num_levels = 0;
@@ -12,6 +12,7 @@ SnakeGame::SnakeGame(){
     score = 0;
     snake_size_body = 1;
     foods = 0;
+    m_player_type = player_type::BACKTRACKING;
 
     game_over = false;
     m_game_state = game_state::STARTING;
@@ -135,17 +136,37 @@ void SnakeGame::initialize(int argc, char* argv[]){
                         return exit(1);
                     }
                     food = static_cast<short>(std::stoi(arg));
-                } catch (const std::invalid_argument& e) {
+                } 
+                catch (const std::invalid_argument& e) {
                     std::cerr << "Invalid argument: " << e.what() << std::endl;
                     return exit(1);
-                } catch (const std::out_of_range& e) {
+                } 
+                catch (const std::out_of_range& e) {
                     std::cerr << "Out of range: " << e.what() << std::endl;
                     return exit(1);
                 }
-            } else if (arg == "--playertype"){
-
             } 
-            
+            else if (arg == "--playertype") {
+                arg = argv[++i];
+
+                try {
+                    if (arg == "backtracking") {
+                        m_player_type = player_type::BACKTRACKING;
+                    } 
+                    else if (arg == "random") {
+                        std::cout << "modo random";
+                        m_player_type = player_type::RANDOM;
+                    } 
+                    else {
+                        std::cerr << "Invalid player type: " << arg << std::endl;
+                        return exit(1);
+                    }
+                } catch (const std::exception& e) {
+                    std::cerr << "Error: " << e.what() << std::endl;
+                    return exit(1);
+                }
+            }
+
             // input file name
             else {
                 open_file(arg);
@@ -211,7 +232,7 @@ void SnakeGame::read_file(){
     // Initialize variables as default
     int lines{-1};
     int columns{-1};
-    int levels{0};
+    //int levels{0};
     std::string str;
     std::vector<std::vector<char>> matrix;
 
@@ -347,32 +368,56 @@ void SnakeGame::update(){
 
     /// Find the path to be followed
     else if(m_game_state == game_state::NEW_PATH){
-        path = level.new_path();
-        // Transition to the state of updating the snake's direction.
-        m_game_state = game_state::UPDATE_DIRECTION;
+        if(m_player_type == player_type::BACKTRACKING){
+            path = level.new_path();
+
+            if(path.empty()){
+                m_game_state = game_state::RANDOM_DIRECTION;
+            }
+            else{
+                // Transition to the state of updating the snake's direction.
+                m_game_state = game_state::UPDATE_DIRECTION;
+            }
+
+        }
+        else if(m_player_type == player_type::RANDOM){
+            m_game_state = game_state::RANDOM_DIRECTION;
+        }
     }
 
     // Update the snake's direction
     else if(m_game_state == game_state::UPDATE_DIRECTION){
-        // Random direction mode
-        if(path.empty()){
+        if(m_player_type == player_type::BACKTRACKING){
 
-            // Continuar aqui, thiago
+            if(path.empty()){
+                m_game_state = game_state::NEW_FOOD;
+            }
+            else{
+                auto temp = snake_size_body;
+                // Move the snake in the specified direction and remove it from the path.
+                level.snake_move(path.front(), snake_size_body, foods);
+                path.pop();
 
-            // Transition to the state of choosing a random direction.
-            //m_game_state = game_state::RANDOM_DIRECTION;
-            m_game_state = game_state::NEW_FOOD;
+                if(temp < snake_size_body) {
+                    score += foods * 10;
+                }
+            
+            }
         }
-        else{
+        else if(m_player_type == player_type::RANDOM){
             // Move the snake in the specified direction and remove it from the path.
             level.snake_move(path.front(), snake_size_body, foods);
             path.pop();
-            
         }
+
     }
 
     // Choose a random direction
     else if(m_game_state == game_state::RANDOM_DIRECTION){
+
+        if(m_player_type == player_type::BACKTRACKING){
+            m_game_state = game_state::NEW_STATE;
+        }
         auto temp = snake_size_body;
         auto aux = level.path_random();
 
@@ -402,9 +447,7 @@ void SnakeGame::update(){
             m_game_state = game_state::GAME_OVER;
         }
         else{
-            // Delete the food and transition to the state of generating new food.
-            level.delete_food();
-            m_game_state = game_state::NEW_FOOD;
+            m_game_state = game_state::NEW_PATH;
         }
     }
 
@@ -423,6 +466,11 @@ void SnakeGame::update(){
         else{
             m_game_state = game_state::FINISHED_PUZZLE;
         }
+    }
+
+    else if(m_game_state == game_state::NEW_STATE){
+        m_game_state = game_state::NEW_PATH;
+
     }
 
     // Finished puzzle state
@@ -456,14 +504,9 @@ void SnakeGame::render(){
         std::cout << Color::tcolor( "\n>>> Press enter to continue.\n", Color::BRIGHT_WHITE, Color::BOLD);
     }
 
-    // Rendering for the NEW_PATH game state
-    else if(m_game_state == game_state::NEW_PATH){
-        // Find the path to be followed (rendering logic not specified).
-        // Add rendering logic as needed.
-    }
-
     // Rendering for the UPDATE_DIRECTION game state
     else if(m_game_state == game_state::UPDATE_DIRECTION){
+        std::cout << "MODO TRACKING";
         // Uncomment the following lines if rendering logic is to be executed.
         std::chrono::milliseconds duration{1000 / fps};
         std::this_thread::sleep_for(duration);
@@ -472,7 +515,8 @@ void SnakeGame::render(){
     }
 
     // Rendering for the RANDOM_DIRECTION game state
-    else if(m_game_state == game_state::RANDOM_DIRECTION){
+    else if(m_game_state == game_state::RANDOM_DIRECTION || m_game_state == game_state::NEW_STATE){
+        std::cout << "MODO RANDOM";
         // Pause for a short duration, then display game data and the running game.
         std::chrono::milliseconds duration{1000 / fps};
         std::this_thread::sleep_for(duration);
@@ -497,6 +541,8 @@ void SnakeGame::render(){
     // Rendering for the GAME_OVER game state
     else if(m_game_state == game_state::GAME_OVER){
         // Display the game over message.
+        data_game();
+        level.display_run_game();
         game_over_display();
     }
 }

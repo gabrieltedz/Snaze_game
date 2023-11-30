@@ -46,19 +46,28 @@ private:
         UPDATE_DIRECTION,                   //!< Updates the matrix with the new snake position.
         RANDOM_DIRECTION,                   //!< Chooses a random direction.
         NEW_LEVEL,                          //!< User wants to start a new game.
+        NEW_STATE,
         CONFIRMING_FINISHED_LEVEL,          //!< User has already started a match. Confirmation needed.
         PRINT_DISPLAY,                      //!< Prints the game.
         GAME_OVER,                          //!< Game over state.
         FINISHED_PUZZLE                     //!< User has completed a puzzle.
     };
 
-
+    /**
+     *  @brief Enumeration representing different type players of the game.
+    */
+    enum class player_type : uint {
+        RANDOM = 0,                       //!< player random
+        BACKTRACKING                      //!< backtracking player
+     
+    };
 
 
     bool game_over;      //!< Is the game over?
     unsigned short fps;      //!< Numbers of frames per second | Default = 4
     unsigned short lives;    //!< Lives the snake has | Default = 5
     unsigned short food;    //!< Quantity of food pellets for the entire simulation | Default = 10
+    player_type m_player_type;
     std::ifstream inputfile;    //!< Name of the level input file
     std::vector<Level> m_levels;  //!< Vector containing the levels of the game
 

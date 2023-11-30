@@ -27,9 +27,16 @@ void SnakeGame::introduction_message() {
     std::cout << Color::tcolor("       ===> Welcome to the classic Snake Game! <===", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
     std::cout << Color::tcolor("             copyright DIMAp / UFRN 2023", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
     std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
-    std::cout <<  Color::tcolor(" Levels loaded: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(m_levels.size()), Color::BRIGHT_WHITE, Color::BOLD);
-    std::cout <<  Color::tcolor(" | Snake lives: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(ret_lives()), Color::BRIGHT_WHITE, Color::BOLD);
-    std::cout <<  Color::tcolor(" | Apples to eat: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(ret_food()), Color::BRIGHT_WHITE, Color::BOLD)  << std::endl;
+    std::cout <<  Color::tcolor(" Levels loaded: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(m_levels.size()), Color::BRIGHT_GREEN, Color::BOLD);
+    std::cout <<  Color::tcolor(" | Snake lives: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(ret_lives()), Color::BRIGHT_GREEN, Color::BOLD);
+    std::cout <<  Color::tcolor(" | Apples to eat: ", Color::BRIGHT_WHITE, Color::BOLD) << Color::tcolor( std::to_string(ret_food()), Color::BRIGHT_GREEN, Color::BOLD)  << std::endl;
+    std::cout <<  Color::tcolor(" Player type: ", Color::BRIGHT_WHITE, Color::BOLD);
+    if(m_player_type == player_type::BACKTRACKING){
+        std::cout << Color::tcolor( "Backtraking", Color::BRIGHT_GREEN, Color::BOLD)  << std::endl;
+    } 
+    else if(m_player_type == player_type::RANDOM){
+        std::cout << Color::tcolor( "Random", Color::BRIGHT_GREEN, Color::BOLD)  << std::endl;
+    }
     std::cout <<  Color::tcolor(  " Clear all levels to win the game. Good luck!!", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
     std::cout << Color::tcolor("-----------------------------------------------------------", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
     std::cout << Color::tcolor(">>> Press <ENTER> to start the game!", Color::BRIGHT_WHITE, Color::BOLD) << std::endl;
