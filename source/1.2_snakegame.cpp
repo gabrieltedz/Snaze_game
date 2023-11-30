@@ -3,7 +3,8 @@
 
 //construtor
 SnakeGame::SnakeGame(){
-    food = 10;
+
+    food = 25;
     lives = 3;
     fps = 4;
     num_levels = 0;
@@ -68,7 +69,13 @@ void SnakeGame::initialize(int argc, char* argv[]){
                 try {
                     // Add a verifier to check if it's negative
                     if (!(std::stoi(arg) >= 0)) {
-                        std::cerr << "Error: Fps resulted in a negative value." << std::endl;
+                        std::cout << Color::tcolor("Error: Fps resulted in a negative value.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                        help_message();
+                        return exit(1);
+                    }
+                    else if(std::stoi(arg) >= 100){
+                        std::cout << Color::tcolor("Error:The FPS exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                        help_message();
                         return exit(1);
                     }
                     fps = static_cast<short>(std::stoi(arg));
@@ -90,7 +97,13 @@ void SnakeGame::initialize(int argc, char* argv[]){
                 try {
                     // Add a verifier to check if it's negative
                     if (!(std::stoi(arg) >= 0)) {
-                        std::cerr << "Error: Fps resulted in a negative value." << std::endl;
+                        std::cout << Color::tcolor("Error:The quantity of lives is negative.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                        help_message();
+                        return exit(1);
+                    }
+                    else if(std::stoi(arg) > 20){
+                        std::cout << Color::tcolor("Error:The quantity of lives exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                        help_message();
                         return exit(1);
                     }
                     lives = static_cast<short>(std::stoi(arg));
@@ -111,7 +124,14 @@ void SnakeGame::initialize(int argc, char* argv[]){
                 try {
                     // Add a verifier to check if it's negative
                     if (!(std::stoi(arg) >= 0)) {
-                        std::cerr << "Error: Fps resulted in a negative value." << std::endl;
+                        std::cerr << "Error: The quantity of foods is negative." << std::endl;
+                        std::cout << Color::tcolor("Error: The quantity of foods is negative.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                        help_message();
+                        return exit(1);
+                    }
+                    else if(std::stoi(arg) > 50){
+                        std::cout << Color::tcolor("Error:The quantity of foods exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                        help_message();
                         return exit(1);
                     }
                     food = static_cast<short>(std::stoi(arg));
@@ -128,7 +148,6 @@ void SnakeGame::initialize(int argc, char* argv[]){
             
             // input file name
             else {
-                std::cout << "passou aqui" << std::endl;
                 open_file(arg);
                 // If input file name is not valid, give error (this is already done in open_file)
                 
@@ -138,7 +157,6 @@ void SnakeGame::initialize(int argc, char* argv[]){
         }
     }
     // Read information on file
-    std::cout << "passou" << std::endl;
     read_file();
 } 
 

@@ -56,6 +56,7 @@ public:
     Position m_pos_food;                    //!< Current position of the food.
     Position snake_head;                    //!< Current position of the snake's head.
     std::queue<Position> snake_tail;        //!< Queue that stores the positions of the snake's tail.
+    direction direction_prev;
 
     int m_lines;                            //!< Number of lines the instance of level has.
     int m_columns;                          //!< Number of columns the instance of level has.
@@ -64,7 +65,7 @@ public:
     /**
      * @brief Contructor that initializes lines, columns and map
     */
-    Level(int lines, int columns, std::vector<std::vector<char>> map) : m_lines(lines), m_columns(columns), m_map(map){}
+    //Level(int lines, int columns, std::vector<std::vector<char>> map) : m_lines(lines), m_columns(columns), m_map(map){}
      
     Level() = default;
     
