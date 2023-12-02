@@ -1,6 +1,7 @@
 #ifndef _SNAKEGAME_H_
 #define _SNAKEGAME_H_
 
+// Done
 
 #include <fstream>
 #include <iostream>
@@ -163,6 +164,8 @@ public:
      * This function is responsible for displaying the entry message when starting the game, which says "snake".
      */
     void snake_display();
+
+    bool aux_is_convert_to_int(const std::string& str);
 
 
     /**

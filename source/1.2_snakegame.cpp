@@ -1,7 +1,25 @@
 #include "1.1_snakegame.h"
 
 
-//construtor
+bool SnakeGame::aux_is_convert_to_int(const std::string& str) {
+    try {
+        size_t pos;
+        std::stoi(str, &pos);
+        
+        // Check if the entire string was used in the conversion
+        return pos == str.length();
+    } catch (std::invalid_argument&) {
+        // stoi threw an invalid_argument exception, indicating a conversion error
+        return false;
+    } catch (std::out_of_range&) {
+        // stoi threw an out_of_range exception, indicating the value is out of the range of int
+        return false;
+    }
+}
+
+/**
+ * @brief Constructor
+*/
 SnakeGame::SnakeGame(){
 
     food = 10;
@@ -29,6 +47,10 @@ void SnakeGame::initialize(int argc, char* argv[]){
     if (argc == 1){
         // error!
         std::cerr << "Error opening the file." << std::endl;
+
+        // Display usage
+        help_message();
+
         return exit(1);
     } 
     
@@ -65,109 +87,112 @@ void SnakeGame::initialize(int argc, char* argv[]){
             
             // If argument is --fps, read the next value as short and update fps
             else if (arg == "--fps"){
+
+                // Advance to next argument
                 arg = argv[++i];
 
-                try {
-                    // Add a verifier to check if it's negative
-                    if (!(std::stoi(arg) >= 0)) {
-                        std::cout << Color::tcolor("Error: Fps resulted in a negative value.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
-                        help_message();
+                // If the current argument is convertible to int
+                if(aux_is_convert_to_int(arg) == true){
+                    try {
+                        // Add a verifier to check if it's negative
+                        if (!(std::stoi(arg) >= 0)) {
+                            std::cout << Color::tcolor("Error: Fps resulted in a negative value.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                            help_message();
+                            return exit(1);
+                        }
+                        else if(std::stoi(arg) >= 100){
+                            std::cout << Color::tcolor("Error:The FPS exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                            help_message();
+                            return exit(1);
+                        }
+                        fps = static_cast<short>(std::stoi(arg));
+                    } catch (const std::invalid_argument& e) {
+                        std::cerr << "Invalid argument: " << e.what() << std::endl;
+                        return exit(1);
+                    } catch (const std::out_of_range& e) {
+                        std::cerr << "Out of range: " << e.what() << std::endl;
                         return exit(1);
                     }
-                    else if(std::stoi(arg) >= 100){
-                        std::cout << Color::tcolor("Error:The FPS exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
-                        help_message();
-                        return exit(1);
-                    }
-                    fps = static_cast<short>(std::stoi(arg));
-                    std::cout << "fps: " << fps << std::endl;
-                } catch (const std::invalid_argument& e) {
-                    std::cerr << "Invalid argument: " << e.what() << std::endl;
-                    return exit(1);
-                } catch (const std::out_of_range& e) {
-                    std::cerr << "Out of range: " << e.what() << std::endl;
-                    return exit(1);
+                } else {
+                    std::cout << "Missing number after argument --fps!" << std::endl;
+                    exit(1);
                 }
 
             } 
             
             // If argument is --lives, read the next value as short and update lives
             else if (arg == "--lives") {
+                // Advance to next argument
                 arg = argv[++i];
 
-                try {
-                    // Add a verifier to check if it's negative
-                    if (!(std::stoi(arg) >= 0)) {
-                        std::cout << Color::tcolor("Error:The quantity of lives is negative.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
-                        help_message();
+                // If the current argument is convertible to int
+                if(aux_is_convert_to_int(arg) == true){
+                    try {
+                        // Add a verifier to check if it's negative
+                        if (!(std::stoi(arg) >= 0)) {
+                            std::cout << Color::tcolor("Error:The quantity of lives is negative.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                            help_message();
+                            return exit(1);
+                        }
+                        else if(std::stoi(arg) > 20){
+                            std::cout << Color::tcolor("Error:The quantity of lives exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                            help_message();
+                            return exit(1);
+                        }
+                        lives = static_cast<short>(std::stoi(arg));
+                    } catch (const std::invalid_argument& e) {
+                        std::cerr << "Invalid argument: " << e.what() << std::endl;
                         return exit(1);
-                    }
-                    else if(std::stoi(arg) > 20){
-                        std::cout << Color::tcolor("Error:The quantity of lives exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
-                        help_message();
+                    } catch (const std::out_of_range& e) {
+                        std::cerr << "Out of range: " << e.what() << std::endl;
                         return exit(1);
-                    }
-                    lives = static_cast<short>(std::stoi(arg));
-                    std::cout << "lives: " << lives << std::endl;
-                } catch (const std::invalid_argument& e) {
-                    std::cerr << "Invalid argument: " << e.what() << std::endl;
-                    return exit(1);
-                } catch (const std::out_of_range& e) {
-                    std::cerr << "Out of range: " << e.what() << std::endl;
-                    return exit(1);
+                    }                    
+                } else {
+                    std::cout << "Missing number after argument --lives!" << std::endl;
+                    exit(1);
                 }
+                
             } 
             
             // If argument is --food, read the next value as short and update food
             else if (arg == "--food") {
+
+                // Advance one
                 arg = argv[++i];
 
-                try {
-                    // Add a verifier to check if it's negative
-                    if (!(std::stoi(arg) >= 0)) {
-                        std::cerr << "Error: The quantity of foods is negative." << std::endl;
-                        std::cout << Color::tcolor("Error: The quantity of foods is negative.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
-                        help_message();
+                // Check if current argument is convertible to int
+                if(aux_is_convert_to_int(arg) == true){
+                    try {
+                        // Add a verifier to check if it's negative
+                        if (!(std::stoi(arg) >= 0)) {
+                            std::cerr << "Error: The quantity of foods is negative." << std::endl;
+                            std::cout << Color::tcolor("Error: The quantity of foods is negative.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                            help_message();
+                            return exit(1);
+                        }
+                        else if(std::stoi(arg) > 50){
+                            std::cout << Color::tcolor("Error:The quantity of foods exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
+                            help_message();
+                            return exit(1);
+                        }
+                        food = static_cast<short>(std::stoi(arg));
+                    } catch (const std::invalid_argument& e) {
+                        std::cerr << "Invalid argument: " << e.what() << std::endl;
+                        return exit(1);
+                    } catch (const std::out_of_range& e) {
+                        std::cerr << "Out of range: " << e.what() << std::endl;
                         return exit(1);
                     }
-                    else if(std::stoi(arg) > 50){
-                        std::cout << Color::tcolor("Error:The quantity of foods exceeded the limit.", Color::BRIGHT_RED, Color::BOLD) << "\n\n";
-                        help_message();
-                        return exit(1);
-                    }
-                    food = static_cast<short>(std::stoi(arg));
-                } 
-                catch (const std::invalid_argument& e) {
-                    std::cerr << "Invalid argument: " << e.what() << std::endl;
-                    return exit(1);
-                } 
-                catch (const std::out_of_range& e) {
-                    std::cerr << "Out of range: " << e.what() << std::endl;
-                    return exit(1);
+                } else {
+                    std::cout << "Missing number after argument --food!" << std::endl;
+                    exit(1);
                 }
+
+            } else if (arg == "--playertype"){
+
             } 
-            else if (arg == "--playertype") {
-                arg = argv[++i];
-
-                try {
-                    if (arg == "backtracking") {
-                        m_player_type = player_type::BACKTRACKING;
-                    } 
-                    else if (arg == "random") {
-                        std::cout << "modo random";
-                        m_player_type = player_type::RANDOM;
-                    } 
-                    else {
-                        std::cerr << "Invalid player type: " << arg << std::endl;
-                        return exit(1);
-                    }
-                } catch (const std::exception& e) {
-                    std::cerr << "Error: " << e.what() << std::endl;
-                    return exit(1);
-                }
-            }
-
-            // input file name
+            
+            // If not any options from the above, it's assumed it's the file's name
             else {
                 open_file(arg);
                 // If input file name is not valid, give error (this is already done in open_file)
@@ -218,11 +243,10 @@ void SnakeGame::open_file(const std::string& filename){
 
     // Check if the file is successfully opened
     if (!inputfile.is_open()) {
-        std::cerr << "Error opening the file.\n";
+        std::cerr << "Error opening the file. File (" << filename << ") not found\n";
         // Handle the error appropriately, you might throw an exception or take other actions
         return exit(1);
     }
-    std::cout << "opened file!" << std::endl;
 }
 
 /**
