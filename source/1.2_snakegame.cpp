@@ -1,6 +1,9 @@
 #include "1.1_snakegame.h"
 
 
+/**
+ * @brief Tests if the string is convertible to int
+*/
 bool SnakeGame::aux_is_convert_to_int(const std::string& str) {
     try {
         size_t pos;
@@ -189,7 +192,15 @@ void SnakeGame::initialize(int argc, char* argv[]){
                 }
 
             } else if (arg == "--playertype"){
-
+                arg = argv[++i];
+                if (arg == "random"){
+                    m_player_type = player_type::RANDOM;
+                } else if (arg == "backtracking"){
+                    m_player_type = player_type::BACKTRACKING;
+                } else {
+                    std::cout << "Unknown option after argument --playertype!" << std::endl;
+                    exit(1);
+                }
             } 
             
             // If not any options from the above, it's assumed it's the file's name
@@ -326,17 +337,17 @@ void SnakeGame::read_file(){
             level1.read_level_maze();
 
             // Add valid level to m_levels
-            std::cout << "\n novo level \n";
+            //std::cout << "\n novo level \n";
             m_levels.push_back(level1);
 
-            std::cout << "Posição spawn, line: " << level1.ret_spawn_position().p_line << ", column: " << level1.ret_spawn_position().p_column << std::endl;
+            //std::cout << "Posição spawn, line: " << level1.ret_spawn_position().p_line << ", column: " << level1.ret_spawn_position().p_column << std::endl;
 
             // Original char matrix
-            std::cout << "completo char: " << std::endl;
-            level1.display();
+            //std::cout << "completo char: " << std::endl;
+            //level1.display();
 
             // Celltype matrix
-            std::cout << "completo cell_type: " << std::endl;
+            //std::cout << "completo cell_type: " << std::endl;
             //level.display_maze();
         } 
         else if (invalid == true){

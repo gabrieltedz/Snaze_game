@@ -299,7 +299,7 @@ std::queue<direction> Level::new_path(){
 
     std::queue<Position> my_queue;
     
-    std::cout << "while loop: (aperte enter para continuar)" << std::endl;
+    //std::cout << "while loop: (aperte enter para continuar)" << std::endl;
     //std::cin.ignore();
 
 
@@ -419,8 +419,6 @@ std::queue<direction> Level::new_path(){
             }
         }
     }
-
-
 
     return path;
 }

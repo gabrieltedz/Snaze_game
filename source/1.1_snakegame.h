@@ -165,6 +165,9 @@ public:
      */
     void snake_display();
 
+    /**
+     * @brief Tests if the string is convertible to int
+    */
     bool aux_is_convert_to_int(const std::string& str);
 
 
