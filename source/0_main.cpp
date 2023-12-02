@@ -1,5 +1,7 @@
 #include "1.1_snakegame.h"
 
+// Done
+
 /**!
  *  This program implements the Snake simulation.
  *  @author Gabriel Victor da Silva
