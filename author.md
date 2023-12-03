@@ -17,8 +17,8 @@ Email: thiaguinho2005@yahoo.com.br
 # Grading
 - [x] Correctly validates the input file(20 points)
 
-- [x] Simulator suggests only random directions (10 points)
-OU
+- [ ] Simulator suggests only random directions (10 points)
+OR
 - [x] Simulator guides snake correctly to food (50 points)
 
 - [x] Present and manipulate the states of the simulation (30 points)
