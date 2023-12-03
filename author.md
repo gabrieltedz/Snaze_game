@@ -1,24 +1,27 @@
-﻿# Identificação Pessoal
+# Introduction
 
-Autor: Gabriel Victor da Silva
+In this practice project, we utilize all tools learned throught the course of the semester here, constructing a Snake-like game where the objective is to read and validate levels via CLI and make an AI that correctly guides the snake to the food until the game is completed. 
+
+﻿# Author(s)
+
+Author: Gabriel Victor da Silva
 
 Email: gabrieltedz.com@gmail.com
 
-Autor: Thiago de Medeiros Raquel
+Author: Thiago de Medeiros Raquel
 
 Email: thiaguinho2005@yahoo.com.br
 
-# Indique quais itens da avaliação foram realizados
+# Grading
+- [x] Correctly validates the input file(20 points)
 
-- [x] Valida corretamente arquivo de entrada (20 pontos)
-
-- [x] Simulador apenas sugere direções randômicas para cobra (10 pontos)
+- [x] Simulator suggests only random directions (10 points)
 OU
-- [x] Simulador direciona a cobra corretamente para a comida (50 pontos)
+- [x] Simulator guides snake correctly to food (50 points)
 
-- [x] Apresentar e manipula corretamente os estados da simulação (30 pontos)
+- [x] Present and manipulate the states of the simulation (30 points)
 
-- [ ] **Extra**: simulação gera o menor caminho
+- [ ] **Extra**: Simulator generates closest path
 - [ ] **Extra**: 
 
 --------
