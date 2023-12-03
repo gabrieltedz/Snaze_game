@@ -537,8 +537,6 @@ direction Level::path_random() {
             path_valid = false;
         }
 
-
-
     }
 
     direction_prev = direction_snaze;

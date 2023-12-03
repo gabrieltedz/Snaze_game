@@ -454,7 +454,7 @@ void SnakeGame::update(){
             m_game_state = game_state::NEW_STATE;
         }
         auto temp = snake_size_body;
-        auto aux = level.path_random();
+        auto aux = level.path_random(); // there is the error of the snake not moving here
 
         // If the direction is undefined, the snake dies.
         if(aux == direction::UNDEFINED){
@@ -541,7 +541,7 @@ void SnakeGame::render(){
 
     // Rendering for the UPDATE_DIRECTION game state
     else if(m_game_state == game_state::UPDATE_DIRECTION){
-        std::cout << "MODO TRACKING";
+        //std::cout << "MODO TRACKING";
         // Uncomment the following lines if rendering logic is to be executed.
         std::chrono::milliseconds duration{1000 / fps};
         std::this_thread::sleep_for(duration);
@@ -551,7 +551,7 @@ void SnakeGame::render(){
 
     // Rendering for the RANDOM_DIRECTION game state
     else if(m_game_state == game_state::RANDOM_DIRECTION || m_game_state == game_state::NEW_STATE){
-        std::cout << "MODO RANDOM";
+        //std::cout << "MODO RANDOM";
         // Pause for a short duration, then display game data and the running game.
         std::chrono::milliseconds duration{1000 / fps};
         std::this_thread::sleep_for(duration);
@@ -575,9 +575,11 @@ void SnakeGame::render(){
 
     // Rendering for the GAME_OVER game state
     else if(m_game_state == game_state::GAME_OVER){
+        std::cout << "game over" << std::endl;
         // Display the game over message.
         data_game();
         level.display_run_game();
         game_over_display();
     }
-}
+
+}   
