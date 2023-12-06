@@ -391,6 +391,7 @@ std::queue<direction> Level::new_path(){
             return path;
             break;
     }
+   
 
     // Follow the path from the snake's current position to the food
     while (matrix_value[current.p_line][current.p_column] != 1000) {
@@ -446,40 +447,17 @@ direction Level::path_random() {
     // Continue generating a random direction until a valid path is found
     while (!path_valid) {
 
-        bool peso_f{false};
-        bool peso_b{false};
-        bool peso_l{false};
-        bool peso_r{false};
-
         int column = snake_head.p_column;
         int line = snake_head.p_line;
 
-        if(m_pos_food.p_line > line){
-            peso_b = true;
-            teste++;
-        }
-        else if(m_pos_food.p_line < line){
-            peso_f = true;
-            teste++;
-        }
-        else if(m_pos_food.p_column > column){
-            peso_r = true;
-            teste++;
-        }
-        else if(m_pos_food.p_column < column){
-            peso_l = true;
-            teste++;
-        }
-        if(teste == 3){
-            peso_b = peso_f = peso_l = peso_r = true;
-            teste = 0;
-        }
+        
 
         // Generate a random number (0 to 3) representing a direction
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> distribution(0, 3);
         random = distribution(gen);
+
 
         // Check if there's a wall or snake body in all directions, set random to 4 if so
         if ((m_maze[line - 1][column] == CellType::WALL || m_maze[line - 1][column] == CellType::SNAKE_BODY) &&
@@ -490,28 +468,28 @@ direction Level::path_random() {
         }
 
         // Check and update positions based on the randomly selected direction
-        if (random == 0 && peso_f == true) { // Forward
+        if (random == 0) { // Forward
             line -= 1;
             if (m_maze[line][column] == CellType::EMPTY || m_maze[line][column] == CellType::FOOD) {
                 direction_snaze = direction::FORWARD;
                 path_valid = true;
             }
         } 
-        else if (random == 1 && peso_b == true) { // Backward
+        else if (random == 1 ) { // Backward
             line += 1;
             if (m_maze[line][column] == CellType::EMPTY || m_maze[line][column] == CellType::FOOD) {
                 direction_snaze = direction::BACKWARD;
                 path_valid = true;
             }
         } 
-        else if (random == 2 && peso_l == true) { // Left
+        else if (random == 2 ) { // Left
             column -= 1;
             if (m_maze[line][column] == CellType::EMPTY || m_maze[line][column] == CellType::FOOD) {
                 direction_snaze = direction::LEFT;
                 path_valid = true;
             }
         } 
-        else if (random == 3 && peso_r == true) { // Right
+        else if (random == 3 ) { // Right
             column += 1;
             if (m_maze[line][column] == CellType::EMPTY || m_maze[line][column] == CellType::FOOD) {
                 direction_snaze = direction::RIGHT;

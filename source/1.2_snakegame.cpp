@@ -406,8 +406,10 @@ void SnakeGame::update(){
         if(m_player_type == player_type::BACKTRACKING){
             path = level.new_path();
 
+
             if(path.empty()){
                 m_game_state = game_state::RANDOM_DIRECTION;
+               
             }
             else{
                 // Transition to the state of updating the snake's direction.
