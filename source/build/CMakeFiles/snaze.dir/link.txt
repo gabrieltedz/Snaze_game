@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall  CMakeFiles/snaze.dir/0_main.cpp.o CMakeFiles/snaze.dir/1.2_snakegame.cpp.o CMakeFiles/snaze.dir/1.3_snkgm_msgs.cpp.o CMakeFiles/snaze.dir/2.1_level.cpp.o -o snaze 
